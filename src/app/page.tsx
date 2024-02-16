@@ -63,7 +63,7 @@ export default function Home() {
     return (
         <>
             <main className="flex h-screen flex-col items-center justify-center gap-y-8">
-            <Image src={Logo} alt="Logo" />
+            <Image priority={true} src={Logo} alt="Logo" />
             <div className="w-full max-w-md flex flex-col">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
