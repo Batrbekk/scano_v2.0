@@ -18,6 +18,8 @@ module.exports = {
     },
     extend: {
       colors: {
+        primeGreen: '#60CA23',
+        unFull: "#cbcfd8",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

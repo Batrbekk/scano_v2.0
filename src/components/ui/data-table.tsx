@@ -128,7 +128,7 @@ export const columns: ColumnDef<Payment>[] = [
       const amount = parseFloat(row.getValue("amount"))
 
       // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("locales-US", {
         style: "currency",
         currency: "USD",
       }).format(amount)
@@ -151,7 +151,6 @@ export const columns: ColumnDef<Payment>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Действия</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
@@ -196,7 +195,7 @@ export function DataTableDemo() {
   })
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full">
       <div className="flex items-center gap-4 py-4">
         <Input
           placeholder="Фильтр для email..."

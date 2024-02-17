@@ -1,0 +1,10 @@
+{
+  "hello": "Салем",
+  "theme": "Темалар",
+  "progressTooltip": "Сізде {limit} темадан {balance} қалды",
+  "createTheme": "Жаңа тема енгізу",
+  "groupNotation": "Темалар топтасуы",
+  "positiveNotation": "Позитив",
+  "negativeNotation": "Негатив",
+  "neutralNotation": "Бейтарап"
+}

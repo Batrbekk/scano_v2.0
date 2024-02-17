@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import {UserData} from "@/types";
 import {getCookie} from "cookies-next";
 import {Footer} from "@/components/footer";
-import {AuthNav} from "@/components/authNav";
+import {Navbar} from "@/components/navbar";
 import {useRouter} from "next/navigation";
 
 export default function DashboardLayout({children,}: { children: React.ReactNode }) {
@@ -44,14 +44,17 @@ export default function DashboardLayout({children,}: { children: React.ReactNode
 
     return (
         <>
-            <AuthNav
+            <Navbar
                 pending={pending}
                 name={userData?.first_name}
                 surname={userData?.last_name}
                 mail={userData?.email}
                 role={userData?.role}
+                img={userData?.photo_url}
             />
-            {children}
+            <main className="px-8">
+                {children}
+            </main>
             <Footer />
         </>
     )

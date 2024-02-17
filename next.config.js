@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const createNextIntlPlugin = require('next-intl/plugin');
 
-module.exports = nextConfig
+const withNextIntl = createNextIntlPlugin();
+
+const nextConfig = {
+    images: {
+        domains: ['test.scano.kz', 'scano-0df0b7c835bf.herokuapp.com'],
+    },
+}
+
+module.exports = withNextIntl(nextConfig);

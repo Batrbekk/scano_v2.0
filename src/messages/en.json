@@ -1,0 +1,10 @@
+{
+  "hello": "hello",
+  "theme": "Themes",
+  "progressTooltip": "You have {balance} left from {limit}",
+  "createTheme": "Create new theme",
+  "groupNotation": "Theme group",
+  "positiveNotation": "Positive",
+  "negativeNotation": "Negative",
+  "neutralNotation": "Neutral"
+}

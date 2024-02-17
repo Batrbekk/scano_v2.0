@@ -1,0 +1,10 @@
+{
+  "hello": "Привет",
+  "theme": "Темы",
+  "progressTooltip": "У вас осталось {balance} тем из {limit}",
+  "createTheme": "Добавить новую тему",
+  "groupNotation": "Группировка тем",
+  "positiveNotation": "Позитив",
+  "negativeNotation": "Негатив",
+  "neutralNotation": "Нейтрально"
+}

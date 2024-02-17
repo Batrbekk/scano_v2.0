@@ -7,11 +7,15 @@ import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import {Toaster} from "@/components/ui/toaster";
+import {NextIntlClientProvider, useMessages} from "next-intl";
 
 const inter = Inter({ subsets: ["latin"] })
 
 interface RootLayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
+  params: {
+    locale: "en" | "ru" | "kk"
+  }
 }
 
 export const metadata: Metadata = {
@@ -64,9 +68,10 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children, params: {locale} }: RootLayoutProps) {
+  const messages = useMessages();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <head />
       <body
         className={cn(
@@ -81,7 +86,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <NextIntlClientProvider messages={messages}>
+            {children}
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>
