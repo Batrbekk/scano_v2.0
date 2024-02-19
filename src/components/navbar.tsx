@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState, useTransition} from 'react';
 import Image from "next/image";
-import {User} from "lucide-react";
+import {Home, User} from "lucide-react";
 import {LogOut} from "lucide-react";
 import Logo from "../../public/logo.svg";
 import {Avatar, AvatarFallback} from "@/components/ui/avatar";
@@ -19,24 +19,27 @@ import {usePathname, useRouter} from "@/navigation";
 import {deleteCookie, getCookie} from "cookies-next";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {useLocale} from "use-intl";
+import {Button} from "@/components/ui/button";
 
-export interface AuthNavProps {
+export interface Props {
     pending: boolean,
     name?: string,
     surname?: string,
     mail?: string,
     role?: string,
-    img?: string | null
+    img?: string | null,
+    isDashboard: boolean
 }
 
-const Navbar: React.FC<AuthNavProps> = (
+const Navbar: React.FC<Props> = (
     {
         pending,
         name,
         surname,
         mail,
         role,
-        img
+        img,
+        isDashboard
     }) => {
     const locale = useLocale();
     const [isPending, startTransition] = useTransition();
@@ -77,6 +80,13 @@ const Navbar: React.FC<AuthNavProps> = (
         <nav className="flex items-center justify-between border-b h-16 px-4">
             <Image priority={true} src={Logo} height={42} alt="logo" />
             <div className="flex items-center gap-x-8">
+                {isDashboard && (
+                  <Button variant="outline" size="icon" onClick={() => {
+                      router.push('/main');
+                  }}>
+                      <Home size={16} />
+                  </Button>
+                )}
                 <Select value={locale} onValueChange={onChangeLang}>
                     <SelectTrigger className="w-[100px]">
                         <SelectValue placeholder={locale} className="uppercase" />

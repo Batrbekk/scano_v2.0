@@ -74,3 +74,32 @@ export type ThemeData = {
   };
   countries: Array<string>;
 }
+
+export type MaterialData = {
+  title: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+  _id: string;
+  language: string;
+  url: string;
+  comments_number: number;
+  material_type: string;
+  likes_number: number;
+  reposts_number: number;
+  views_number: number;
+  source: {
+    source_type: string;
+    name: string;
+    url: string;
+  };
+  country_id: string;
+  city_id: string | null;
+  author_id: string;
+  theme_id: string;
+  sentiment: string;
+  subscriber_count: number;
+  real_created_at: string;
+  img_url: string;
+  tags: string[];
+}

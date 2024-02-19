@@ -1,44 +1,15 @@
 "use client"
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Group} from "lucide-react";
 import {useTranslations} from "use-intl";
 import {Button} from "@/components/ui/button";
 import {Progress} from "@/components/ui/progress";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import {ThemeData} from "@/types";
-import {env} from "@/env.mjs";
-import {getCookie} from "cookies-next";
-import {DataTableDemo} from "@/components/ui/data-table";
+import {ThemesTable} from "@/components/ui/themes-table";
 
 export default function Main() {
     const t = useTranslations();
-
-    const token = getCookie('scano_acess_token');
-    const [pending, setPending] = useState<boolean>(true);
-    const [themes, setThemes] = useState<ReadonlyArray<ThemeData>>([]);
-
-    async function getThemesData() {
-        const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/themes`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        if (res.ok) {
-            const data = await res.json();
-            setThemes(data);
-            setPending(false);
-        } else {
-            setPending(false);
-            console.error('Get themes data ERROR');
-        }
-    }
-
-    useEffect(() => {
-        getThemesData()
-    }, []);
 
     return (
         <div className="py-6">
@@ -48,7 +19,7 @@ export default function Main() {
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger>
-                                <Progress className="h-3 w-36" color="#60CA23" value={33} />
+                                <Progress className="h-3 w-36" value={33} />
                             </TooltipTrigger>
                             <TooltipContent>
                                 {t('progressTooltip', {balance: 33, limit: 100})}
@@ -78,8 +49,18 @@ export default function Main() {
                     </div>
                 </div>
             </div>
-            <div>
-                <DataTableDemo />
+            <ThemesTable />
+            <div className="flex items-center justify-between w-full pt-4">
+                <div className="flex items-center gap-x-4">
+                    <Button>{t('createTheme')}</Button>
+                    <Button>{t('searchByYear')}</Button>
+                </div>
+                <div className="flex items-center gap-x-8">
+                    <Button className="p-0" variant="link">{t('archiveCollection')}</Button>
+                    <Button className="p-0" variant="link">{t('addMessageTopic')}</Button>
+                    <Button className="p-0" variant="link">{t('copyThemeSetting')}</Button>
+                    <Button className="p-0" variant="link">{t('archiveReport')}</Button>
+                </div>
             </div>
         </div>
     )

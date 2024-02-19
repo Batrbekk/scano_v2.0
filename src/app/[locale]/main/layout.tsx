@@ -1,14 +1,14 @@
 "use client"
 
 import {env} from "@/env.mjs";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {UserData} from "@/types";
-import {getCookie} from "cookies-next";
+import {getCookie, setCookie} from "cookies-next";
 import {Footer} from "@/components/footer";
 import {Navbar} from "@/components/navbar";
 import {useRouter} from "next/navigation";
 
-export default function DashboardLayout({children,}: { children: React.ReactNode }) {
+export default function Layout({children,}: { children: React.ReactNode }) {
     const router = useRouter();
     const token = getCookie('scano_acess_token');
     const [pending, setPending] = useState<boolean>(true);
@@ -26,6 +26,7 @@ export default function DashboardLayout({children,}: { children: React.ReactNode
             const data = await res.json();
             setUserData(data);
             setPending(false);
+            setCookie('userData', data);
         } else {
             setPending(false);
             console.error('Get user data ERROR');
@@ -51,6 +52,7 @@ export default function DashboardLayout({children,}: { children: React.ReactNode
                 mail={userData?.email}
                 role={userData?.role}
                 img={userData?.photo_url}
+                isDashboard={false}
             />
             <main className="px-8">
                 {children}
