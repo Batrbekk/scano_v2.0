@@ -1,97 +1,80 @@
 "use client"
 
-import { z } from "zod";
+import {z} from "zod";
+import {env} from "@/env.mjs";
 import Image from "next/image";
 import Logo from "@/public/logo.svg";
-import React, {useState} from "react";
+import {Loader2} from "lucide-react";
+import {useRouter} from "@/navigation";
 import {useForm} from "react-hook-form";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {env} from "@/env.mjs";
-import {setCookie} from "cookies-next";
-import {Loader2} from "lucide-react";
-import { useRouter } from '@/navigation';
-import {useLocale} from "use-intl";
+import {useSearchParams} from "next/navigation";
+import React, {useEffect, useState} from "react";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormMessage} from "@/components/ui/form";
 
 const formSchema = z.object({
-    mail: z.string().min(1, {
-        message: 'Введите корректный email'
-    }),
     password: z.string().min(8, {
         message: 'Пароль должен содержать не менее 8 символов'
-    })
+    }),
+    confirmPassword: z.string()
 });
 
-export default function Home() {
-    const locale = useLocale();
+export default function Page () {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const searchParams = useSearchParams();
+    const [code, setCode] = useState('');
     const [err, setErr] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            mail: '',
-            password: ''
+            password: '',
+            confirmPassword: ''
         }
     });
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        setIsLoading(true);
-
-        const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/users/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: values.mail,
-                password: values.password,
-            }),
-        });
-
-        if (res.ok) {
-            setErr(null);
-            const data = await res.json();
-            setCookie('scano_acess_token', data.access_token);
-            router.push(`/main`);
+    async function onSubmit (values: z.infer<typeof formSchema>) {
+        if (values.password !== values.confirmPassword) {
+            setErr('Пароли не совпадают, попробуйте еше раз!');
         } else {
-            setErr('В почте или пароле ошибка, попробуйте снова.');
-            setIsLoading(false);
-            console.error('Login failed');
+            setErr(null);
+            const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/users/set-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    password: values.password,
+                    confirm_password: values.confirmPassword,
+                    code: code
+                }),
+            });
+            if (res.ok) {
+                setErr(null);
+                router.push('/');
+            } else {
+                setErr('Сервис временно не работает...')
+            }
         }
-  }
+    }
+
+    useEffect(() => {
+        const code = searchParams.get('code');
+        if (code) {
+            setCode(code);
+        }
+    }, []);
 
     return (
-        <main className="flex h-screen flex-col items-center justify-center gap-y-8">
+        <main className="flex flex-col h-screen items-center justify-center gap-y-8">
             <Image priority={true} src={Logo} alt="Logo"/>
             <div className="w-full max-w-md flex flex-col">
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-8">
                         <div className="flex flex-col gap-y-4">
-                            <FormField
-                                name="mail"
-                                control={form.control}
-                                render={({field}) => (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input
-                                                id="email"
-                                                placeholder="mail@example.com"
-                                                type="email"
-                                                autoCapitalize="none"
-                                                autoComplete="email"
-                                                autoCorrect="off"
-                                                disabled={isLoading}
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage/>
-                                    </FormItem>
-                                )}
-                            />
                             <FormField
                                 name="password"
                                 control={form.control}
@@ -113,30 +96,44 @@ export default function Home() {
                                     </FormItem>
                                 )}
                             />
+                            <FormField
+                                name="confirmPassword"
+                                control={form.control}
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input
+                                                id="confirmPassword"
+                                                placeholder="Подтвердить пароль"
+                                                type="password"
+                                                autoCapitalize="none"
+                                                autoComplete="password"
+                                                autoCorrect="off"
+                                                disabled={isLoading}
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
                             {err && (
                                 <FormDescription className="text-red-600">
                                     {err}
                                 </FormDescription>
                             )}
                         </div>
-                        <Button type="submit" className="w-full max-w-md" disabled={isLoading}>{
-                            isLoading ? <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
-                                Подождите
-                            </> : 'Войти'
-                        }</Button>
+                        <Button
+                            type="submit"
+                            disabled={isLoading}
+                            className="w-full max-w-md"
+                        >{isLoading ?
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin"/>Подождите
+                            </> : 'Сохранить'}
+                        </Button>
                     </form>
                 </Form>
-                <Button
-                    variant="link"
-                    className="mt-4"
-                    onClick={() => {
-                        router.push('/auth/forgot-password/')
-                    }}
-                >
-                    Забыли пароль ?
-                </Button>
             </div>
         </main>
-    )
+)
 }
