@@ -80,16 +80,9 @@ export default function RootLayout({ children, params: {locale} }: RootLayoutPro
         )}
       >
       <Toaster />
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextIntlClientProvider messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </ThemeProvider>
+      <NextIntlClientProvider messages={messages}>
+        {children}
+      </NextIntlClientProvider>
       </body>
     </html>
   )
