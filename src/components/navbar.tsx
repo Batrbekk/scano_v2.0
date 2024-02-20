@@ -78,7 +78,7 @@ const Navbar: React.FC<Props> = (
     }, [img]);
     return (
         <nav className="flex items-center justify-between border-b h-16 px-4">
-            <Image priority={true} src={Logo} height={42} alt="logo" />
+            <Image priority={true} src={Logo} height={42} alt="logo" onClick={() => {router.push('/main')}} className="cursor-pointer" />
             <div className="flex items-center gap-x-8">
                 {isDashboard && (
                   <Button variant="outline" size="icon" onClick={() => {

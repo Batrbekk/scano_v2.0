@@ -6,10 +6,13 @@ import {useTranslations} from "use-intl";
 import {Button} from "@/components/ui/button";
 import {Progress} from "@/components/ui/progress";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import {ThemesTable} from "@/components/ui/themes-table";
+import {ThemesTable} from "@/components/themes-table";
+import {router} from "next/client";
+import {useRouter} from "@/navigation";
 
 export default function Main() {
     const t = useTranslations();
+    const router = useRouter();
 
     return (
         <div className="py-6">
@@ -56,10 +59,28 @@ export default function Main() {
                     <Button>{t('searchByYear')}</Button>
                 </div>
                 <div className="flex items-center gap-x-8">
-                    <Button className="p-0" variant="link">{t('archiveCollection')}</Button>
-                    <Button className="p-0" variant="link">{t('addMessageTopic')}</Button>
+                    <Button
+                        className="p-0"
+                        variant="link"
+                        onClick={() => {router.push('/main/archive')}}
+                    >
+                        {t('archiveCollection')}
+                    </Button>
+                    <Button
+                        className="p-0"
+                        variant="link"
+                        onClick={() => {router.push('/main/add-message-theme')}}
+                    >
+                        {t('addMessageTopic')}
+                    </Button>
                     <Button className="p-0" variant="link">{t('copyThemeSetting')}</Button>
-                    <Button className="p-0" variant="link">{t('archiveReport')}</Button>
+                    <Button
+                        className="p-0"
+                        variant="link"
+                        onClick={() => {router.push('/main/report-archive')}}
+                    >
+                        {t('archiveReport')}
+                    </Button>
                 </div>
             </div>
         </div>

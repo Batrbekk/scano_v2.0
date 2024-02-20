@@ -406,6 +406,16 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@maskito/core@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@maskito/core/-/core-2.0.2.tgz#3eb0fa40d8f4d24aeb5df3f6d41029bd02188362"
+  integrity sha512-OUdylgfQ06kBu3QvFikxz0FsZT4GJxnpIR3+YmQBzyWAnuZKJkjwl8C0UTjWD3mvsnMHak4GRCveJZKtApF7aA==
+
+"@maskito/react@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@maskito/react/-/react-2.0.2.tgz#db87ba2ef6fdb15d2a7b1a7e88efaf737ed828a7"
+  integrity sha512-3LBkjqGnmJK7x4AWMGYEavj2ZmoJwyoYwf9KAd13rkO/RIqxd7XPKYYi+0a1K4fjl2ry97Nrkz94PCDvmU9biA==
+
 "@next/env@14.0.4":
   version "14.0.4"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-14.0.4.tgz#d5cda0c4a862d70ae760e58c0cd96a8899a2e49a"

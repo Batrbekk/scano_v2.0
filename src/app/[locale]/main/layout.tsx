@@ -6,12 +6,14 @@ import {UserData} from "@/types";
 import {getCookie, setCookie} from "cookies-next";
 import {Footer} from "@/components/footer";
 import {Navbar} from "@/components/navbar";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "@/navigation";
+import {cn} from "@/lib/utils";
 
 export default function Layout({children,}: { children: React.ReactNode }) {
     const router = useRouter();
     const token = getCookie('scano_acess_token');
     const [pending, setPending] = useState<boolean>(true);
+    const [isPadding, setIsPadding] = useState<boolean>(true);
     const [userData, setUserData] = useState<UserData | null>(null);
 
     async function getUserData() {
