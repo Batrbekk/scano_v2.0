@@ -25,7 +25,7 @@ const SideNav = () => {
 
   return (
       <ScrollArea className="h-[850px]">
-        <div className="flex flex-col gap-y-6">
+        <div className="flex flex-col gap-y-6 mb-10">
           <div className="border-b">
             <div className="flex flex-col gap-y-4 p-4">
               <p className="text-lg font-semibold">{t('analytic')}</p>

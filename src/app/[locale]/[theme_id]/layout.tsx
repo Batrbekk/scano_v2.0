@@ -8,7 +8,7 @@ import {env} from "@/env.mjs";
 import {Navbar} from "@/components/navbar";
 import {Footer} from "@/components/footer";
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable";
-import {SideNav} from "@/components/ui/side-nav";
+import {SideNav} from "@/components/side-nav";
 
 export default function Layout({children,}: { children: React.ReactNode }) {
   const router = useRouter();
