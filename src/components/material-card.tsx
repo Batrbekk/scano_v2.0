@@ -141,9 +141,9 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
                     <Tooltip delayDuration={400}>
                       <TooltipTrigger>
                         <Button variant="outline" size="sm">
-                          {tone === 'negative' && (<Frown size={16}/>)}
-                          {tone === 'neutral' && (<Meh size={16}/>)}
-                          {tone === 'positive' && (<Smile size={16}/>)}
+                          {tone === 'negative' && (<Frown className="stroke-red-500" size={16}/>)}
+                          {tone === 'neutral' && (<Meh className="stroke-blue-500" size={16}/>)}
+                          {tone === 'positive' && (<Smile className="stroke-primeGreen" size={16}/>)}
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
