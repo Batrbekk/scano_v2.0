@@ -53,7 +53,7 @@ export default function Main() {
                 </div>
             </div>
             <ThemesTable />
-            <div className="flex items-center justify-between w-full pt-4">
+            <div className="flex items-center justify-between w-full pt-4 mb-20">
                 <div className="flex items-center gap-x-4">
                     <Button>{t('createTheme')}</Button>
                     <Button onClick={() => {router.push('/main/search-archive')}}>{t('searchByYear')}</Button>

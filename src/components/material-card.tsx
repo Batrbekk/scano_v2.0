@@ -114,7 +114,7 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
                     </Button>
                   </AlertDialogHeader>
                   <AlertDialogDescription>
-                    <ScrollArea className="h-[260px] shadow-inner">
+                    <ScrollArea className="h-[260px]">
                       {text}
                     </ScrollArea>
                   </AlertDialogDescription>

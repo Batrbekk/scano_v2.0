@@ -509,7 +509,7 @@ export default function Main() {
           </AlertDialog>
         </div>
         <div className="flex items-start justify-between gap-x-8 pb-10">
-          <div className="w-full">
+          <div className="w-full mb-20">
             <MaterialsList theme_id={themeId} />
           </div>
           <div className="w-1/4 rounded border p-4 flex flex-col gap-y-4">
