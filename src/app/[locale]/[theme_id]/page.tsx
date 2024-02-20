@@ -31,7 +31,6 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Checkbox} from "@/components/ui/checkbox";
 import {env} from "@/env.mjs";
 import {useToast} from "@/components/ui/use-toast";
-import {MaterialCard} from "@/components/material-card";
 import {MaterialsList} from "@/components/materials-list";
 import {ScrollArea} from "@/components/ui/scroll-area";
 
@@ -509,7 +508,7 @@ export default function Main() {
             </AlertDialogContent>
           </AlertDialog>
         </div>
-        <div className="flex items-start justify-between gap-x-8">
+        <div className="flex items-start justify-between gap-x-8 pb-10">
           <div className="w-full">
             <MaterialsList theme_id={themeId} />
           </div>
@@ -586,6 +585,7 @@ export default function Main() {
                 )
               })}
             </div>
+            <Button>{t('apply')}</Button>
           </div>
         </div>
       </div>

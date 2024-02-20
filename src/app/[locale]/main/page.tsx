@@ -56,7 +56,7 @@ export default function Main() {
             <div className="flex items-center justify-between w-full pt-4">
                 <div className="flex items-center gap-x-4">
                     <Button>{t('createTheme')}</Button>
-                    <Button>{t('searchByYear')}</Button>
+                    <Button onClick={() => {router.push('/main/search-archive')}}>{t('searchByYear')}</Button>
                 </div>
                 <div className="flex items-center gap-x-8">
                     <Button
