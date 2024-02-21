@@ -35,10 +35,6 @@ export default function Main() {
                 </div>
                 <div className="flex items-center gap-x-8">
                     <div className="flex items-center gap-x-2 cursor-pointer">
-                        <Group size={16} />
-                        {t('groupNotation')}
-                    </div>
-                    <div className="flex items-center gap-x-2 cursor-pointer">
                         <div className="w-4 h-4 rounded-full bg-primeGreen" />
                         {t('positiveNotation')}
                     </div>

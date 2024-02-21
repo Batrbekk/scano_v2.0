@@ -127,7 +127,7 @@ export default function Page () {
                     </Tooltip>
                 </TooltipProvider>
             </div>
-            <Tabs defaultValue="archive">
+            <Tabs defaultValue="archive" className="mb-20">
                 <TabsList className="flex items-center gap-x-4 max-w-md justify-between">
                     <TabsTrigger value="archive" className="w-1/2">
                         <h4 className="text-lg font-semibold">
@@ -151,12 +151,16 @@ export default function Page () {
                                         <SelectContent>
                                             <SelectGroup>
                                                 {themes.map((item) => (
-                                                    <SelectItem value={item._id} key={item._id}>{item.name}</SelectItem>
+                                                  <SelectItem value={item._id} key={item._id}>{item.name}</SelectItem>
                                                 ))}
                                             </SelectGroup>
                                         </SelectContent>
                                     </SelectTrigger>
                                 </Select>
+                            </div>
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="picture">{t('link')}</Label>
+                                <Input placeholder={t('linkPlaceholder')}/>
                             </div>
                             <div className="grid w-full items-center gap-3">
                                 <Label htmlFor="picture">{t('typeMessage')}</Label>
@@ -177,7 +181,7 @@ export default function Page () {
                             </div>
                             <div className="grid w-full items-center gap-1.5">
                                 <Label htmlFor="picture">{t('text')}</Label>
-                                <Textarea placeholder={t('text')} className="resize-none" />
+                                <Textarea placeholder={t('text')} className="resize-none"/>
                             </div>
                             <div className="flex items-center gap-x-4">
                                 <div className="w-1/2 grid items-center gap-1.5">
@@ -196,39 +200,40 @@ export default function Page () {
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <Button
-                                                    id="date"
-                                                    variant={"outline"}
-                                                    className={cn(
-                                                        "justify-between text-left font-normal",
-                                                        !date && "text-muted-foreground"
-                                                    )}
+                                                  id="date"
+                                                  variant={"outline"}
+                                                  className={cn(
+                                                    "justify-between text-left font-normal",
+                                                    !date && "text-muted-foreground"
+                                                  )}
                                                 >
                                                     {date ? (
-                                                        <>
-                                                            {format(date, "dd-MM-yyyy")}
-                                                        </>
+                                                      <>
+                                                          {format(date, "dd-MM-yyyy")}
+                                                      </>
                                                     ) : (
-                                                        <>
-                                                            <span className="text-muted-foreground">{t('chooseDate')}</span>
-                                                            <CalendarIcon className="h-4 w-4"/>
-                                                        </>
+                                                      <>
+                                                          <span
+                                                            className="text-muted-foreground">{t('chooseDate')}</span>
+                                                          <CalendarIcon className="h-4 w-4"/>
+                                                      </>
                                                     )}
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className="w-auto p-0" align="start">
                                                 <Calendar
-                                                    locale={ru}
-                                                    initialFocus
-                                                    mode="single"
-                                                    selected={date}
-                                                    onSelect={setDate}
+                                                  locale={ru}
+                                                  initialFocus
+                                                  mode="single"
+                                                  selected={date}
+                                                  onSelect={setDate}
                                                 />
                                             </PopoverContent>
                                         </Popover>
                                     </div>
                                     <div className="w-1/2 grid items-center gap-1.5">
                                         <Label htmlFor="picture">{t('time')}</Label>
-                                        <Input placeholder={t('time')} />
+                                        <Input placeholder={t('time')}/>
                                     </div>
                                 </div>
                                 <div className="w-1/2 grid items-center gap-1.5">
@@ -239,7 +244,8 @@ export default function Page () {
                                             <SelectContent>
                                                 <SelectGroup>
                                                     {countries.map((item) => (
-                                                        <SelectItem value={item.value} key={item.value}>{item.name}</SelectItem>
+                                                      <SelectItem value={item.value}
+                                                                  key={item.value}>{item.name}</SelectItem>
                                                     ))}
                                                 </SelectGroup>
                                             </SelectContent>
@@ -269,7 +275,7 @@ export default function Page () {
                         <div className="p-4 rounded border w-2/3 flex flex-col gap-y-8">
                             <div className="grid w-full items-center gap-1.5">
                                 <Label htmlFor="picture">{t('fileMessage')}</Label>
-                                <Input id="picture" type="file"/>
+                                <Input id="picture" type="file" className="cursor-pointer"/>
                                 <small className="text-sm text-muted-foreground font-medium leading-none ml-2">
                                     {t('formatUpdateMessage')}
                                 </small>

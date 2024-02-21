@@ -18,7 +18,7 @@ import {env} from "@/env.mjs";
 import {usePathname, useRouter} from "@/navigation";
 import {deleteCookie, getCookie} from "cookies-next";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {useLocale} from "use-intl";
+import {useLocale, useTranslations} from "use-intl";
 import {Button} from "@/components/ui/button";
 
 export interface Props {
@@ -41,6 +41,7 @@ const Navbar: React.FC<Props> = (
         img,
         isDashboard
     }) => {
+    const t = useTranslations();
     const locale = useLocale();
     const [isPending, startTransition] = useTransition();
     const pathname = usePathname();
@@ -129,14 +130,14 @@ const Navbar: React.FC<Props> = (
                         <DropdownMenuGroup>
                             <DropdownMenuItem className="cursor-pointer flex items-center gap-x-2">
                                 <User />
-                                Профиль
+                                {t('profile')}
                             </DropdownMenuItem>
                             <DropdownMenuItem className="cursor-pointer flex items-center gap-x-2" onClick={() => {
                                 deleteCookie('scano_acess_token');
                                 router.replace('/');
                             }}>
                                 <LogOut />
-                                Выйти
+                                {t('exit')}
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                     </DropdownMenuContent>
