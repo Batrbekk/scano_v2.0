@@ -58,20 +58,6 @@ const countries = [
         value: 'br'
     }
 ];
-const langs = [
-    {
-        value: 'ru',
-        label: 'Русский'
-    },
-    {
-        value: 'kk',
-        label: 'Казахский'
-    },
-    {
-        value: 'en',
-        label: 'Английский'
-    }
-];
 
 export default function Page () {
     const t = useTranslations();
@@ -80,6 +66,21 @@ export default function Page () {
         from: undefined,
         to: undefined,
     });
+
+    const langs = [
+        {
+            value: 'ru',
+            label: t('ru')
+        },
+        {
+            value: 'kk',
+            label: t('kk')
+        },
+        {
+            value: 'en',
+            label: t('en')
+        }
+    ];
 
     return (
         <div className="py-4 flex flex-col gap-y-8">

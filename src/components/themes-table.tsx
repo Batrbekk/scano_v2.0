@@ -47,7 +47,7 @@ import {
   Loader2,
   MoreHorizontal,
   PauseCircle,
-  Pencil,
+  Pencil, PlayCircle,
   Trash2
 } from "lucide-react";
 import {TonalityChart} from "@/components/ui/tonality-chart";
@@ -164,7 +164,7 @@ export function ThemesTable() {
       header: t('action'),
       enableHiding: false,
       cell: ({row}) => {
-        const payment = row.original
+        const theme = row.original
 
         return (
           <DropdownMenu>
@@ -177,7 +177,7 @@ export function ThemesTable() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="gap-x-2 cursor-pointer"
-                onClick={() => navigator.clipboard.writeText(payment._id)}
+                onClick={() => navigator.clipboard.writeText(theme._id)}
               >
                 <Copy size={14} />
                 {t('copy')} ID
@@ -187,13 +187,25 @@ export function ThemesTable() {
                 <Pencil size={14} />
                 {t('edit')}
               </DropdownMenuItem>
-              <DropdownMenuItem className="gap-x-2 cursor-pointer">
+              <DropdownMenuItem
+                  className="gap-x-2 cursor-pointer"
+                  onClick={() => deleteTheme(theme._id)}
+              >
                 <Trash2 size={14} />
                 {t('delete')}
               </DropdownMenuItem>
-              <DropdownMenuItem className="gap-x-2 cursor-pointer">
-                <PauseCircle size={14} />
-                {t('stop')}
+              <DropdownMenuItem
+                  className="gap-x-2 cursor-pointer"
+                  onClick={() => {
+                    if (theme.is_active) {
+                      isActiveTheme(theme._id, 'pause');
+                    } else {
+                      isActiveTheme(theme._id, 'resume');
+                    }
+                  }}
+              >
+                {theme.is_active ? <PauseCircle size={14} /> : <PlayCircle size={14} />}
+                {theme.is_active ? t('stop') : t('resume')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -218,6 +230,42 @@ export function ThemesTable() {
     } else {
       setPending(false);
       console.error('Get themes data ERROR');
+    }
+  }
+
+  async function deleteTheme(id: string) {
+    setPending(true);
+    setData([]);
+    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/themes/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (res.ok) {
+      getThemesData()
+    } else {
+      setPending(false);
+      console.error('delete themes ERROR');
+    }
+  }
+
+  async function isActiveTheme(id: string, condition: string) {
+    setPending(true);
+    setData([]);
+    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/themes${id}/${condition}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (res.ok) {
+      getThemesData()
+    } else {
+      setPending(false);
+      console.error(`${condition} themes ERROR`);
     }
   }
 

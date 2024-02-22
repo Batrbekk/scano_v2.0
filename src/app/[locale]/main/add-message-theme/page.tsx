@@ -342,7 +342,7 @@ export default function Page () {
                             <div className="flex items-start gap-x-4">
                                 <Info size={32}/>
                                 <div className="flex flex-col gap-y-4 w-[90%]">
-                                <code className="relative rounded bg-muted p-2 w-full font-mono font-semibold">
+                                    <code className="relative rounded bg-muted p-2 w-full font-mono font-semibold">
                                         {t('addMessageInfo3')}
                                     </code>
                                     <TooltipProvider>
