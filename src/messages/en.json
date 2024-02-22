@@ -152,7 +152,7 @@
   "detailedAboutRule": "More information about the rules for connecting channels",
   "createThemeInfo6": "The tonality object is the object in relation to which the tonality is determined.",
   "details": "Read more",
-  "chooseThemeType": "Select a theme",
+  "chooseThemeType": "Select a theme type",
   "searchWords": "Search words",
   "videoInWeb": "Network video",
   "channelsInMessengers": "Channels in messengers",
@@ -165,5 +165,6 @@
   "en": "English",
   "excludeSrc": "Exclude source",
   "excludeSrcLimit": "Up to {limit} sources",
-  "createThemeInfo": "Settings that change when editing a topic do not affect already collected messages. Therefore, we recommend testing your search query at the topic creation stage. To check and optimize the settings, use the “Show results” button."
+  "createThemeInfo": "Settings that change when editing a topic do not affect already collected messages. Therefore, we recommend testing your search query at the topic creation stage. To check and optimize the settings, use the “Show results” button.",
+  "chooseThemeSource": "Select theme source"
 }

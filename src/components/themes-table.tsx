@@ -183,7 +183,10 @@ export function ThemesTable() {
                 {t('copy')} ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="gap-x-2 cursor-pointer">
+              <DropdownMenuItem
+                className="gap-x-2 cursor-pointer"
+                onClick={() => router.push(`/${theme._id}/edit/editTheme`)}
+              >
                 <Pencil size={14} />
                 {t('edit')}
               </DropdownMenuItem>

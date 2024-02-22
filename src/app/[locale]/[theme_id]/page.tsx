@@ -182,10 +182,10 @@ export default function Main() {
                   >
                     {startDate?.from ? (
                       startDate.to ? (
-                        <>
+                        <p className="truncate w-[95%]">
                           {format(startDate.from, "dd-MM-yyyy")}{" "}{`${startHour}:${startMin}`} ~{" "}
                           {format(startDate.to, "dd-MM-yyyy")}{" "}{`${endHour}:${endMin}`}
-                        </>
+                        </p>
                       ) : (
                         format(startDate.from, "dd-MM-yyyy")
                       )

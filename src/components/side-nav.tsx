@@ -5,22 +5,39 @@ import {AreaChart, MailCheck, Mails, Minus, Newspaper, Plus, Scroll, Settings, T
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible";
 import {useEffect, useState} from "react";
 import {ScrollArea} from "@/components/ui/scroll-area";
-import {usePathname} from "@/navigation";
+import {usePathname, useRouter} from "@/navigation";
 import {cn} from "@/lib/utils";
+import {router} from "next/client";
 
 const SideNav = () => {
+  const router = useRouter();
   const t = useTranslations();
   const path = usePathname();
 
+  const [lengthPath, setLengthPath] = useState(0);
+  const [lastPage, setLastPage] = useState<string>('');
+  const [themeId, setThemeId] = useState<string | null>(null);
   const [settingIsOpen, setSettingIsOpen] = useState<boolean>(false);
   const [materialIsOpen, setMaterialIsOpen] = useState<boolean>(false);
-  const [lengthPath, setLengthPath] = useState(0);
 
   useEffect(() => {
     setLengthPath(path.split('/').length);
+    setLastPage(path.split('/')[path.split('/').length - 1]);
+
     if (path.split('/').length === 2) {
       setMaterialIsOpen(true);
     }
+
+  }, [path]);
+
+  useEffect(() => {
+    if (lastPage === 'editTheme') {
+      setSettingIsOpen(true);
+    }
+  }, [lastPage]);
+
+  useEffect(() => {
+    setThemeId(path.split('/')[1]);
   }, [path]);
 
   return (
@@ -52,10 +69,15 @@ const SideNav = () => {
                 </CollapsibleTrigger>
                 <CollapsibleContent className="border-l ml-4">
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className={cn(
+                    <div
+                      className={cn(
                         "flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer",
                         lengthPath === 2 && 'bg-gray-200 mb-2'
-                    )}>
+                      )}
+                      onClick={() => {
+                        router.push(`/${themeId}/`)
+                      }}
+                    >
                       {lengthPath === 2 && (
                           <Minus size={20}/>
                       )}
@@ -112,8 +134,17 @@ const SideNav = () => {
                 </CollapsibleTrigger>
                 <CollapsibleContent className="border-l ml-4">
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
-                      <p>Профиль</p>
+                    <div
+                      className={cn(
+                        'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                        lastPage === 'editTheme' && 'bg-gray-200 mb-2'
+                      )}
+                      onClick={() => {
+                        router.push(`/${themeId}/edit/editTheme`);
+                      }}
+                    >
+                      {lastPage === 'editTheme' && <Minus size={20} />}
+                      <p>{t('profile')}</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
