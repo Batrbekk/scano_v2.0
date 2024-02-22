@@ -3,7 +3,7 @@ import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import { format } from "date-fns";
 import {useRouter} from "next/navigation";
-import {Frown, Meh, Plus, Share, Smile, Star, Trash2, X} from "lucide-react";
+import {Frown, Meh, Plus, Share, ShieldCheck, Smile, Star, Trash2, X} from "lucide-react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {useTranslations} from "use-intl";
@@ -42,6 +42,7 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
   const [tone, setTone] = useState<string | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [isProcessed, setIsProcessed] = useState<boolean>(false);
 
   async function getPhoto(img: string) {
     try {
@@ -135,6 +136,20 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
           </div>
           <div className="w-1/4 flex flex-col items-end gap-y-4">
             <div className="flex items-center gap-x-2">
+              <TooltipProvider delayDuration={400}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button variant="outline" size="sm" onClick={() => {setIsProcessed(!isProcessed)}}>
+                      <ShieldCheck size={16} className={cn(
+                        isProcessed ? 'stroke-primeGreen' : 'stroke-red-500'
+                      )} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {isProcessed ? t('processedMaterial') : t('unprocessedMaterial')}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               <Popover>
                 <PopoverTrigger>
                   <TooltipProvider>
