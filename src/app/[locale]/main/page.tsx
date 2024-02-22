@@ -29,7 +29,7 @@ export default function Main() {
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
-                    <Button>
+                    <Button onClick={() => {router.push('/main/create-theme')}}>
                         {t('createTheme')}
                     </Button>
                 </div>
