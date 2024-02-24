@@ -1,41 +1,38 @@
 "use client"
 
-import {date} from "zod";
-import Image from "next/image";
-import { cn } from "@/lib/utils"
-import { ru } from 'date-fns/locale';
-import {getCookie} from "cookies-next";
-import {useTranslations} from "use-intl";
-import {useParams} from "next/navigation";
-import {DateRange} from "react-day-picker";
+import {ScrollArea} from "@/components/ui/scroll-area";
 import {Input} from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Select } from "@radix-ui/react-select";
-import React, {useEffect, useState} from 'react';
-import { Calendar } from "@/components/ui/calendar";
-import {CalendarIcon, Download, Filter, FilterX, X} from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {cn} from "@/lib/utils";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Button} from "@/components/ui/button";
+import {date} from "zod";
+import {format} from "date-fns";
+import {CalendarIcon, Download} from "lucide-react";
+import {Select} from "@radix-ui/react-select";
 import {SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Calendar} from "@/components/ui/calendar";
+import {ru} from "date-fns/locale";
+import Image from "next/image";
 import Excel from "@/public/icons/excel.svg";
 import Word from "@/public/icons/word.svg";
 import Pdf from "@/public/icons/pdf.svg";
-import {format} from "date-fns";
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent, AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTrigger
-} from "@/components/ui/alert-dialog";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {Checkbox} from "@/components/ui/checkbox";
-import {env} from "@/env.mjs";
+import React, {useEffect, useState} from "react";
 import {useToast} from "@/components/ui/use-toast";
+import {useTranslations} from "use-intl";
+import {useParams} from "next/navigation";
+import {env} from "@/env.mjs";
+import {getCookie} from "cookies-next";
+import {DateRange} from "react-day-picker";
 import {MaterialsList} from "@/components/materials-list";
-import {ScrollArea} from "@/components/ui/scroll-area";
 import {ThemeFilter} from "@/components/theme-filter";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Review} from "@/components/view/analytic/review";
+import {Sources} from "@/components/view/analytic/sources";
+import {Authors} from "@/components/view/analytic/authors";
+import {Geography} from "@/components/view/analytic/geography";
+import {Tags} from "@/components/view/analytic/tags";
 
-export default function Main() {
+export default function Page () {
   const { toast } = useToast();
   const t = useTranslations();
   const params = useParams();
@@ -44,6 +41,10 @@ export default function Main() {
 
   const [themeId, setThemeId] = useState<string>('');
   const [searchByMaterial, setSearchByMaterial] = useState<string>('');
+
+  const [isExport, setIsExport] = useState<boolean>(false);
+  const [exportToast, setExportToast] = useState<string>(t('exportToastPending'));
+
   const [startDate, setStartDate] = React.useState<DateRange | undefined>({
     from: undefined,
     to: undefined,
@@ -53,8 +54,28 @@ export default function Main() {
   const [endHour, setEndHour] = React.useState('00');
   const [endMin, setEndMin] = React.useState('00');
 
-  const [isExport, setIsExport] = useState<boolean>(false);
-  const [exportToast, setExportToast] = useState<string>(t('exportToastPending'));
+  const tabs = [
+    {
+      value: 'review',
+      label: t('review')
+    },
+    {
+      value: 'sources',
+      label: t('sources')
+    },
+    {
+      value: 'authors',
+      label: t('authors')
+    },
+    {
+      value: 'geography',
+      label: t('geography')
+    },
+    {
+      value: 'tags',
+      label: t('tags')
+    }
+  ];
 
   const getExportExcel = async () => {
     try {
@@ -297,18 +318,45 @@ export default function Main() {
             </PopoverContent>
           </Popover>
         </div>
-        <div className="flex items-start justify-between gap-x-8 pb-10">
-          <div className="w-3/4 flex flex-col gap-y-4 mb-20">
-            <div className="h-10 flex items-center">
-              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight border-r pr-4">
-                {t('filter')}
-              </h4>
-            </div>
-            <MaterialsList theme_id={themeId}/>
-          </div>
-          <div className="w-1/4 flex flex-col items-end gap-y-4">
-            <ThemeFilter onlyButton={false} />
-          </div>
+        <div className="flex items-center justify-between">
+          <h4 className="scroll-m-20 text-xl font-semibold tracking-tight border-r pr-4">
+            {t('filter')}
+          </h4>
+          <ThemeFilter onlyButton={true}/>
+        </div>
+        <div className="w-full">
+          <Tabs defaultValue="review" className="w-full">
+            <TabsList className="w-full flex items-center justify-between h-16 px-2 border">
+              {tabs.map(item => (
+                <TabsTrigger key={item.value} value={item.value} className="w-1/5 py-3" >
+                  <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                    {item.label}
+                  </h4>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {tabs.map(item => (
+              <TabsContent key={item.value} value={item.value} className="mt-8">
+                <div className="w-full">
+                  {item.value === 'review' && (
+                    <Review />
+                  )}
+                  {item.value === 'sources' && (
+                    <Sources />
+                  )}
+                  {item.value === 'authors' && (
+                    <Authors />
+                  )}
+                  {item.value === 'geography' && (
+                    <Geography />
+                  )}
+                  {item.value === 'tags' && (
+                    <Tags />
+                  )}
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
         </div>
       </div>
     </ScrollArea>

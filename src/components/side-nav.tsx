@@ -34,6 +34,10 @@ const SideNav = () => {
     if (lastPage === 'editTheme') {
       setSettingIsOpen(true);
     }
+    if (lastPage === 'analytic') {
+      setSettingIsOpen(false);
+      setMaterialIsOpen(false);
+    }
   }, [lastPage]);
 
   useEffect(() => {
@@ -41,13 +45,19 @@ const SideNav = () => {
   }, [path]);
 
   return (
-      <ScrollArea className="h-[850px]">
-        <div className="flex flex-col gap-y-6 mb-10">
+      <ScrollArea className="h-screen">
+        <div className="flex flex-col gap-y-6 mb-20">
           <div className="border-b">
             <div className="flex flex-col gap-y-4 p-4">
               <p className="text-lg font-semibold">{t('analytic')}</p>
               <div
-                  className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer"
+                  className={cn(
+                    'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                    lastPage === 'analytic' && 'bg-gray-200'
+                  )}
+                  onClick={() => {
+                    router.push(`/${themeId}/analytic`);
+                  }}
               >
                 <AreaChart size={20}/>
                 <p>{t('analytic')}</p>

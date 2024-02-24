@@ -218,7 +218,7 @@ export function ThemesTable() {
   ];
 
   async function getThemesData() {
-    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/themes`, {
+    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/themes/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
