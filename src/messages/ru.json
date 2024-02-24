@@ -194,5 +194,11 @@
   "chartAuthorType": "Тип авторов",
   "chartAuthorDynamic": "Динамика по авторам",
   "chartAuthorGender": "Пол авторов",
-  "chartAuthorAge": "Возраст авторов"
+  "chartAuthorAge": "Возраст авторов",
+  "countries": "Страны",
+  "cities": "Города",
+  "city": "Город",
+  "searchByCity": "Поиск по городу",
+  "searchByCountry": "Поиск по стране",
+  "percentage": "Процентаж"
 }

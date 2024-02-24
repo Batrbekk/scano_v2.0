@@ -193,5 +193,11 @@
   "chartAuthorType": "Автор түрі",
   "chartAuthorDynamic": "Авторлардың динамикасы",
   "chartAuthorGender": "Авторлардың жынысы",
-  "chartAuthorAge": "Авторлардың жасы"
+  "chartAuthorAge": "Авторлардың жасы",
+  "countries": "Елдер",
+  "cities": "Қалалар",
+  "city": "Қала",
+  "searchByCity": "Қала бойынша іздеу",
+  "searchByCountry": "Ел бойынша іздеу",
+  "percentage": "Пайыз"
 }

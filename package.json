@@ -11,6 +11,7 @@
     "format:check": "pnpm prettier ./src --check"
   },
   "dependencies": {
+    "@highcharts/map-collection": "^2.1.0",
     "@hookform/resolvers": "^3.3.4",
     "@maskito/core": "^2.0.2",
     "@maskito/react": "^2.0.2",

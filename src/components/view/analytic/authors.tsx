@@ -1,4 +1,3 @@
-import {ToneSource} from "@/components/sources/tone-source";
 import {AuthorsTable} from "@/components/authors/authors-table";
 import {AuthorType} from "@/components/authors/author-type";
 import {AuthorDynamic} from "@/components/authors/author-dynamic";

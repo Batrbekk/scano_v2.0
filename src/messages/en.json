@@ -190,5 +190,11 @@
   "chartAuthorType": "Author type",
   "chartAuthorDynamic": "Dynamics by authors",
   "chartAuthorGender": "Gender of authors",
-  "chartAuthorAge": "Age of authors"
+  "chartAuthorAge": "Age of authors",
+  "countries": "Countries",
+  "cities": "Cities",
+  "city": "City",
+  "searchByCity": "Search by city",
+  "searchByCountry": "Search by country",
+  "percentage": "Percentage"
 }

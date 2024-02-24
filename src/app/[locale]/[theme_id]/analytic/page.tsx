@@ -107,7 +107,7 @@ export default function Page () {
   }, [params]);
 
   return (
-    <ScrollArea className="h-screen">
+    <ScrollArea className="h-screen w-full">
       <div className="p-4 flex flex-col gap-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-4 w-full">
