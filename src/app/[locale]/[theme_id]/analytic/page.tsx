@@ -108,7 +108,7 @@ export default function Page () {
 
   return (
     <ScrollArea className="h-screen w-full">
-      <div className="p-4 flex flex-col gap-y-4">
+      <div className="p-4 flex flex-col gap-y-4 w-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-4 w-full">
             <h4 className="scroll-m-20 text-xl font-semibold tracking-tight border-r pr-4">

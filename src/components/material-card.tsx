@@ -3,7 +3,7 @@ import {Checkbox} from "@/components/ui/checkbox";
 import {Button} from "@/components/ui/button";
 import { format } from "date-fns";
 import {useRouter} from "next/navigation";
-import {Frown, Meh, Plus, Share, ShieldCheck, Smile, Star, Trash2, X} from "lucide-react";
+import {Frown, Meh, Plus, Share, ShieldCheck, ShieldXIcon, Smile, Star, Trash2, X} from "lucide-react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {useTranslations} from "use-intl";
@@ -140,9 +140,9 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
                 <Tooltip>
                   <TooltipTrigger>
                     <Button variant="outline" size="sm" onClick={() => {setIsProcessed(!isProcessed)}}>
-                      <ShieldCheck size={16} className={cn(
-                        isProcessed ? 'stroke-primeGreen' : 'stroke-red-500'
-                      )} />
+                      {isProcessed ? <ShieldCheck size={20} className={cn(
+                        isProcessed && 'stroke-blue-500'
+                      )} /> : <ShieldXIcon size={20} />}
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -156,9 +156,9 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
                     <Tooltip delayDuration={400}>
                       <TooltipTrigger>
                         <Button variant="outline" size="sm">
-                          {tone === 'negative' && (<Frown className="stroke-red-500" size={16}/>)}
-                          {tone === 'neutral' && (<Meh className="stroke-blue-500" size={16}/>)}
-                          {tone === 'positive' && (<Smile className="stroke-primeGreen" size={16}/>)}
+                          {tone === 'negative' && (<Frown className="stroke-red-500" size={20}/>)}
+                          {tone === 'neutral' && (<Meh className="stroke-blue-500" size={20}/>)}
+                          {tone === 'positive' && (<Smile className="stroke-primeGreen" size={20}/>)}
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -173,19 +173,19 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
                       changeTone('negative')
                     }} variant="outline" size="sm"
                             className={cn(tone === 'negative' && 'bg-red-500 hover:bg-red-500 text-white hover:text-white')}>
-                      <Frown size={16}/>
+                      <Frown size={20}/>
                     </Button>
                     <Button onClick={() => {
                       changeTone('neutral')
                     }} variant="outline" size="sm"
                             className={cn(tone === 'neutral' && 'bg-blue-500 hover:bg-blue-500 text-white hover:text-white')}>
-                      <Meh size={16}/>
+                      <Meh size={20}/>
                     </Button>
                     <Button onClick={() => {
                       changeTone('positive')
                     }} variant="outline" size="sm"
                             className={cn(tone === 'positive' && 'bg-primeGreen hover:bg-primeGreen text-white hover:text-white')}>
-                      <Smile size={16}/>
+                      <Smile size={20}/>
                     </Button>
                   </div>
                 </PopoverContent>

@@ -31,7 +31,12 @@ const SideNav = () => {
   }, [path]);
 
   useEffect(() => {
+    if (lastPage === 'createTag') {
+      setMaterialIsOpen(false);
+      setSettingIsOpen(true);
+    }
     if (lastPage === 'editTheme') {
+      setMaterialIsOpen(false);
       setSettingIsOpen(true);
     }
     if (lastPage === 'analytic') {
@@ -53,7 +58,7 @@ const SideNav = () => {
               <div
                   className={cn(
                     'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
-                    lastPage === 'analytic' && 'bg-gray-200'
+                    lastPage === 'analytic' && 'bg-gray-200',
                   )}
                   onClick={() => {
                     router.push(`/${themeId}/analytic`);
@@ -173,12 +178,18 @@ const SideNav = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
-                      <p>Создание тега</p>
+                    <div className={cn(
+                      'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                      lastPage === 'createTag' && 'bg-gray-200 my-2'
+                    )}>
+                      {lastPage === 'createTag' && <Minus size={20} />}
+                      <p>{t('createTag')}</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
+                    <div className={cn(
+                      'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                    )}>
                       <p>Редактировать тему</p>
                     </div>
                   </div>

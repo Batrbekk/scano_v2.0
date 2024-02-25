@@ -196,5 +196,13 @@
   "city": "City",
   "searchByCity": "Search by city",
   "searchByCountry": "Search by country",
-  "percentage": "Percentage"
+  "percentage": "Percentage",
+  "chartTagMessage": "Messages by tag",
+  "searchByTag": "Search by tag",
+  "tag": "Tag",
+  "blnc": "Balance",
+  "chartTagTone": "Sentiment by tags",
+  "chartTagDynamic": "Dynamics by tags",
+  "loyal": "Loyalty",
+  "createTag": "Create tag"
 }

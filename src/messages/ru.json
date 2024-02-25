@@ -200,5 +200,13 @@
   "city": "Город",
   "searchByCity": "Поиск по городу",
   "searchByCountry": "Поиск по стране",
-  "percentage": "Процентаж"
+  "percentage": "Процентаж",
+  "chartTagMessage": "Сообщений по тегу",
+  "searchByTag": "Поиск по тегу",
+  "tag": "Тег",
+  "blnc": "Баланс",
+  "chartTagTone": "Тональность по тегам",
+  "chartTagDynamic": "Динамика по тегам",
+  "loyal": "Лояльность",
+  "createTag": "Создать тег"
 }

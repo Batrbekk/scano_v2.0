@@ -199,5 +199,13 @@
   "city": "Қала",
   "searchByCity": "Қала бойынша іздеу",
   "searchByCountry": "Ел бойынша іздеу",
-  "percentage": "Пайыз"
+  "percentage": "Пайыз",
+  "chartTagMessage": "Тег бойынша хабарламалар",
+  "searchByTag": "Тег бойынша іздеу",
+  "tag": "Тег",
+  "blnc": "Баланс",
+  "chartTagTone": "Тегтер бойынша сезім",
+  "chartTagDynamic": "Тегтер бойынша динамика",
+  "loyal": "Адалдық",
+  "createTag": "Тег жасау"
 }
