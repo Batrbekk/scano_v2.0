@@ -210,7 +210,7 @@ export default function Page() {
   return (
     <ScrollArea className="h-screen">
       {pending ? (
-        <div className="py-4 px-4 flex flex-col gap-y-4">
+        <div className="p-4 flex flex-col gap-y-4">
           <Skeleton className="h-[24px] w-[250px] rounded" />
           <div className="flex items-start gap-x-8 w-full mb-20">
             <div className="flex flex-col gap-y-8 w-2/3">
@@ -224,7 +224,7 @@ export default function Page() {
           </div>
         </div>
         ) : (
-          <div className="py-4 px-4 flex flex-col gap-y-4">
+          <div className="p-4 flex flex-col gap-y-4">
             <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
               {t('addTheme')}
             </h3>

@@ -204,5 +204,14 @@
   "chartTagTone": "Sentiment by tags",
   "chartTagDynamic": "Dynamics by tags",
   "loyal": "Loyalty",
-  "createTag": "Create tag"
+  "createTag": "Create tag",
+  "editTheme": "Edit theme",
+  "createTagTitle": "Creating a new tag",
+  "tagColor": "Tag color",
+  "createTagInfo": "Enter search words or phrases, separated by commas.",
+  "createTagInfo2": "Description of search queries",
+  "allPeriod": "All periods",
+  "month": "Month",
+  "day": "Day",
+  "inputError": "Fill in the field correctly"
 }

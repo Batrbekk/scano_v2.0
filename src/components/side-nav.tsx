@@ -94,7 +94,7 @@ const SideNav = () => {
                       }}
                     >
                       {lengthPath === 2 && (
-                          <Minus size={20}/>
+                          <Minus size={16}/>
                       )}
                       <p>{t('all')}</p>
                     </div>
@@ -152,13 +152,10 @@ const SideNav = () => {
                     <div
                       className={cn(
                         'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
-                        lastPage === 'editTheme' && 'bg-gray-200 mb-2'
+                        lastPage === 'editProfile' && 'bg-gray-200 mb-2'
                       )}
-                      onClick={() => {
-                        router.push(`/${themeId}/edit/editTheme`);
-                      }}
                     >
-                      {lastPage === 'editTheme' && <Minus size={20} />}
+                      {lastPage === 'editProfile' && <Minus size={16} />}
                       <p>{t('profile')}</p>
                     </div>
                   </div>
@@ -180,17 +177,24 @@ const SideNav = () => {
                   <div className="flex flex-col gap-y-2 ml-2">
                     <div className={cn(
                       'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
-                      lastPage === 'createTag' && 'bg-gray-200 my-2'
-                    )}>
-                      {lastPage === 'createTag' && <Minus size={20} />}
+                      lastPage === 'createTag' && 'bg-gray-200 my-2')}
+                      onClick={() => {
+                        router.push(`/${themeId}/create/createTag`);
+                      }}
+                    >
+                      {lastPage === 'createTag' && <Minus size={16} />}
                       <p>{t('createTag')}</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
                     <div className={cn(
-                      'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
-                    )}>
-                      <p>Редактировать тему</p>
+                      'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer', lastPage === 'editTheme' && 'bg-gray-200 my-2')}
+                         onClick={() => {
+                           router.push(`/${themeId}/edit/editTheme`);
+                         }}
+                    >
+                      {lastPage === 'editTheme' && <Minus size={16} />}
+                      <p>{t('editTheme')}</p>
                     </div>
                   </div>
                 </CollapsibleContent>
