@@ -56,7 +56,6 @@ import {useRouter} from "@/navigation";
 export function ThemesTable() {
   const router = useRouter();
   const t = useTranslations();
-  const locale = useLocale();
   const token = getCookie('scano_acess_token');
   const [pending, setPending] = useState<boolean>(true);
 

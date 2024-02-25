@@ -6,7 +6,7 @@ import {useTranslations} from "use-intl";
 import {Button} from "@/components/ui/button";
 import {Progress} from "@/components/ui/progress";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import {ThemesTable} from "@/components/themes-table";
+import {ThemesTable} from "@/components/tables/themes-table";
 import {router} from "next/client";
 import {useRouter} from "@/navigation";
 

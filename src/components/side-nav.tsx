@@ -31,13 +31,9 @@ const SideNav = () => {
   }, [path]);
 
   useEffect(() => {
-    if (lastPage === 'createTag') {
-      setMaterialIsOpen(false);
+    if (lastPage === 'editTheme' || lastPage === 'createTag' || lastPage === 'rules' || lastPage === 'createRule' || lastPage === 'users') {
       setSettingIsOpen(true);
-    }
-    if (lastPage === 'editTheme') {
       setMaterialIsOpen(false);
-      setSettingIsOpen(true);
     }
     if (lastPage === 'analytic') {
       setSettingIsOpen(false);
@@ -160,18 +156,42 @@ const SideNav = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
-                      <p>Пользователи</p>
+                    <div
+                      className={cn('flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                        lastPage === 'users' && 'bg-gray-200 mb-2'
+                      )}
+                      onClick={() => {
+                        router.push(`/${themeId}/users`);
+                      }}
+                    >
+                      {lastPage === 'users' && <Minus size={16} />}
+                      <p>{t('users')}</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
-                      <p>Интеграций</p>
+                    <div
+                      className={cn('flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                        lastPage === 'integration' && 'bg-gray-200 my-2'
+                      )}
+                      onClick={() => {
+                        router.push(`/${themeId}/integration`);
+                      }}
+                    >
+                      {lastPage === 'integration' && <Minus size={16} />}
+                      <p>{t('integration')}</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
-                      <p>Правила</p>
+                    <div
+                      className={cn('flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                        (lastPage === 'rules' || lastPage === 'createRule') && 'bg-gray-200 my-2'
+                      )}
+                      onClick={() => {
+                        router.push(`/${themeId}/rules/`);
+                      }}
+                    >
+                      {(lastPage === 'rules' || lastPage === 'createRule') && <Minus size={16} />}
+                      <p>{t('rules')}</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">

@@ -15,7 +15,7 @@ import {Calendar} from "@/components/ui/calendar";
 import {ru} from "date-fns/locale";
 import {DateRange} from "react-day-picker";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
-import {HistoryTable} from "@/components/history-table";
+import {HistoryTable} from "@/components/tables/history-table";
 import {ThemeData} from "@/types";
 
 export default function Page () {

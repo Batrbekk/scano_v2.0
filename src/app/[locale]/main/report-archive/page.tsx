@@ -2,7 +2,7 @@
 
 import {Info} from "lucide-react";
 import {useTranslations} from "use-intl";
-import {ArchiveTable} from "@/components/archvie-table";
+import {ArchiveTable} from "@/components/tables/archvie-table";
 
 export default function Page () {
     const t = useTranslations();
