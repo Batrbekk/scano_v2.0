@@ -112,7 +112,14 @@ const SideNav = () => {
                   </div>
                 </CollapsibleContent>
               </Collapsible>
-              <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
+              <div
+                className={cn('flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                  lastPage === 'notification' && 'bg-gray-200 mb-2'
+                )}
+                onClick={() => {
+                  router.push(`/${themeId}/notification`);
+                }}
+              >
                 <Mails size={20}/>
                 <p>{t('notification')}</p>
               </div>

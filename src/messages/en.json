@@ -247,5 +247,9 @@
   "editProfileInfo2": "The password must contain at least 8 characters, include upper and lowercase Latin letters, numbers and special characters.",
   "editProfile": "Editing a profile",
   "notification": "Notifications",
-  "createUser": "Create a user"
+  "createUser": "Create a user",
+  "createUserInfo1": "The created user will be sent an email with a password. If necessary, the password can be changed in the settings.",
+  "createUserInfo2": "The administrator has access to all topics with moderator mods, as well as creating new topics and adding users.",
+  "createUserInfo3": "The moderator has the ability to view and edit topics for which he has moderator rights.",
+  "rule": "Rights"
 }

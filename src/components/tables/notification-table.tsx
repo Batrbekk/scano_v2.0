@@ -58,7 +58,7 @@ interface Props {
   id: string
 }
 
-const UsersTable: React.FC<Props> = ({id}) => {
+const NotificationTable: React.FC<Props> = ({id}) => {
   const router = useRouter();
   const t = useTranslations();
   const token = getCookie('scano_acess_token');
@@ -390,4 +390,4 @@ const UsersTable: React.FC<Props> = ({id}) => {
   )
 }
 
-export {UsersTable}
+export {NotificationTable}
