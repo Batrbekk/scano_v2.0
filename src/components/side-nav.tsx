@@ -114,7 +114,7 @@ const SideNav = () => {
               </Collapsible>
               <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
                 <Mails size={20}/>
-                <p>{t('news')}</p>
+                <p>{t('notification')}</p>
               </div>
               <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
                 <MailCheck size={20}/>

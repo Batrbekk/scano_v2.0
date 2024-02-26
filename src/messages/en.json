@@ -245,5 +245,7 @@
   "confirmNewPassword": "Confirming a new password",
   "editProfileInfo1": "The user's time zone affects the viewing of data in the system interface. Subscriptions and alerts are created in the Super Account Administrator time zone (UTC +6)",
   "editProfileInfo2": "The password must contain at least 8 characters, include upper and lowercase Latin letters, numbers and special characters.",
-  "editProfile": "Editing a profile"
+  "editProfile": "Editing a profile",
+  "notification": "Notifications",
+  "createUser": "Create a user"
 }

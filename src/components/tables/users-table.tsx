@@ -268,6 +268,9 @@ const UsersTable: React.FC<Props> = ({id}) => {
     <div className="w-full">
       <div className="flex items-center justify-between py-4 w-full">
         <div className="flex items-center gap-x-4 w-1/2">
+          <Button>
+            {t('createUser')}
+          </Button>
           <Input
             placeholder={t('searchByEmail')}
             value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
