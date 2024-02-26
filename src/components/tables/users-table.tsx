@@ -121,7 +121,7 @@ const UsersTable: React.FC<Props> = ({id}) => {
       header: t('role'),
       cell: ({row}) => (
         <div className="capitalize">
-          <p>{row.original.role}</p>
+          <p>{t(row.original.role)}</p>
         </div>
       )
     },
@@ -151,7 +151,10 @@ const UsersTable: React.FC<Props> = ({id}) => {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="gap-x-2 cursor-pointer"
-                onClick={() => router.push(`/${id}/edit/editUser`)}
+                onClick={() => {
+                  setCookie('editUserData', user);
+                  router.push(`/${id}/edit/editUser`);
+                }}
               >
                 <Pencil size={14} />
                 {t('edit')}

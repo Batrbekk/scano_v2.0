@@ -232,5 +232,18 @@
   "company": "Company",
   "role": "Rights",
   "nothing": "Absent",
-  "searchByEmail": "Search by E-mail"
+  "searchByEmail": "Search by E-mail",
+  "admin": "Administrator",
+  "super_admin": "Super administrator",
+  "moderator": "Moderator",
+  "guest": "Guest",
+  "profileUser": "User profile",
+  "addPhoto": "Add photo",
+  "surname": "Surname",
+  "changePassword": "Change password",
+  "newPassword": "New Password",
+  "confirmNewPassword": "Confirming a new password",
+  "editProfileInfo1": "The user's time zone affects the viewing of data in the system interface. Subscriptions and alerts are created in the Super Account Administrator time zone (UTC +6)",
+  "editProfileInfo2": "The password must contain at least 8 characters, include upper and lowercase Latin letters, numbers and special characters.",
+  "editProfile": "Editing a profile"
 }

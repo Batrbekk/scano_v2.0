@@ -31,7 +31,7 @@ const SideNav = () => {
   }, [path]);
 
   useEffect(() => {
-    if (lastPage === 'editTheme' || lastPage === 'createTag' || lastPage === 'rules' || lastPage === 'createRule' || lastPage === 'users') {
+    if (lastPage === 'editTheme' || lastPage === 'createTag' || lastPage === 'rules' || lastPage === 'createRule' || lastPage === 'users' || lastPage === 'editUser') {
       setSettingIsOpen(true);
       setMaterialIsOpen(false);
     }
@@ -158,13 +158,13 @@ const SideNav = () => {
                   <div className="flex flex-col gap-y-2 ml-2">
                     <div
                       className={cn('flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
-                        lastPage === 'users' && 'bg-gray-200 mb-2'
+                          (lastPage === 'users' || lastPage === 'editUser') && 'bg-gray-200 mb-2'
                       )}
                       onClick={() => {
                         router.push(`/${themeId}/users`);
                       }}
                     >
-                      {lastPage === 'users' && <Minus size={16} />}
+                      {(lastPage === 'users' || lastPage === 'editUser') && <Minus size={16} />}
                       <p>{t('users')}</p>
                     </div>
                   </div>
