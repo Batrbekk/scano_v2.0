@@ -150,6 +150,9 @@ const SideNav = () => {
                         'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
                         lastPage === 'editProfile' && 'bg-gray-200 mb-2'
                       )}
+                      onClick={() => {
+                        router.push(`/${themeId}/edit/editProfile`);
+                      }}
                     >
                       {lastPage === 'editProfile' && <Minus size={16} />}
                       <p>{t('profile')}</p>
@@ -158,7 +161,7 @@ const SideNav = () => {
                   <div className="flex flex-col gap-y-2 ml-2">
                     <div
                       className={cn('flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
-                          (lastPage === 'users' || lastPage === 'editUser') && 'bg-gray-200 mb-2'
+                          (lastPage === 'users' || lastPage === 'editUser') && 'bg-gray-200 my-2'
                       )}
                       onClick={() => {
                         router.push(`/${themeId}/users`);
