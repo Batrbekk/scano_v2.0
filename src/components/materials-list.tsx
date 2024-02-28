@@ -69,6 +69,25 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
     }
   }
 
+  async function deleteCard(id: string) {
+    setPending(true);
+    setMaterials([]);
+    try {
+      const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/materials/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (res.ok) {
+        getMaterials();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   const handleUpdate = () => {
     if (token && theme_id) {
       getMaterials();
@@ -88,6 +107,13 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
   function chooseAll () {
     const selectedMaterials = materials.slice(0, parseInt(count)).map(material => material._id);
     form.setValue('materials_id', selectedMaterials);
+  }
+
+  function deleteMaterial () {
+    const materials = form.getValues('materials_id');
+    materials.map((item) => {
+      deleteCard(item);
+    });
   }
 
   useEffect(() => {
@@ -167,8 +193,9 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
                 />
                 <div className="flex items-center justify-between rounded">
                   <div className="flex items-center gap-x-4">
-                    <Button onClick={chooseAll}>{t('chooseAll')}</Button>
-                    <Button>{t('delete')}</Button>
+                    <Button onClick={chooseAll} variant="outline">{t('chooseAll')}</Button>
+                    <Button onClick={() => {form.setValue('materials_id', [])}} variant="outline">{t('clearFilter')}</Button>
+                    <Button onClick={deleteMaterial} variant="outline">{t('delete')}</Button>
                   </div>
                   <Pagination>
                     <PaginationContent>
