@@ -31,7 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {NotificationData, UserData} from "@/types";
+import {NotificationData, SubscribeData, UserData} from "@/types";
 import {useEffect, useState} from "react";
 import {env} from "@/env.mjs";
 import {getCookie, setCookie} from "cookies-next";
@@ -58,7 +58,7 @@ interface Props {
   id: string
 }
 
-const NotificationTable: React.FC<Props> = ({id}) => {
+const SubscribeTable: React.FC<Props> = ({id}) => {
   const router = useRouter();
   const t = useTranslations();
   const token = getCookie('scano_acess_token');
@@ -68,9 +68,9 @@ const NotificationTable: React.FC<Props> = ({id}) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [data, setData] = useState<NotificationData[]>([]);
+  const [data, setData] = useState<SubscribeData[]>([]);
 
-  const columns: ColumnDef<NotificationData>[] = [
+  const columns: ColumnDef<SubscribeData>[] = [
     {
       accessorKey: "_id",
       header: "#",
@@ -90,11 +90,15 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       ),
     },
     {
-      accessorKey: "created_at",
-      header: t('created'),
+      accessorKey: "file_format_types",
+      header: t('format'),
       cell: ({row}) => (
         <div className="capitalize">
-          {format(new Date(row.original.created_at), 'dd/MM/yyyy')}
+          <ul className="list-disc">
+            {row.original.file_format_types.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       )
     },
@@ -103,8 +107,8 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       header: 'E-mail',
       cell: ({row}) => (
         <div className="capitalize">
-          <ul className="list-disc ">
-            {row.original.email_list.map((item) => (
+          <ul className="list-disc">
+            {row.original.emails.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
@@ -112,15 +116,20 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       )
     },
     {
-      accessorKey: "telegram_channel_ids",
-      header: 'Telegram',
+      accessorKey: "header",
+      header: t('header'),
       cell: ({row}) => (
         <div className="capitalize">
-          <ul className="list-disc ">
-            {row.original.telegram_channel_ids.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
+          {row.original.header}
+        </div>
+      )
+    },
+    {
+      accessorKey: "subheader",
+      header: t('subheader'),
+      cell: ({row}) => (
+        <div className="capitalize">
+          {row.original.subheader}
         </div>
       )
     },
@@ -140,19 +149,12 @@ const NotificationTable: React.FC<Props> = ({id}) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                className="gap-x-2 cursor-pointer"
-                onClick={() => navigator.clipboard.writeText(notif._id)}
-              >
-                <Copy size={14} />
-                {t('copy')} ID
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="gap-x-2 cursor-pointer"
                 onClick={() => {
-                  setCookie('editNotifData', notif);
-                  router.push(`/${id}/edit/editNotif`);
+                  setCookie('editSubsData', notif);
+                  router.push(`/${id}/edit/editSubs`);
                 }}
               >
                 <Pencil size={14} />
@@ -160,7 +162,7 @@ const NotificationTable: React.FC<Props> = ({id}) => {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="gap-x-2 cursor-pointer"
-                onClick={() => deleteNotif(notif._id)}
+                onClick={() => deleteSubs(notif.header)}
               >
                 <Trash2 size={14} />
                 {t('delete')}
@@ -172,8 +174,8 @@ const NotificationTable: React.FC<Props> = ({id}) => {
     },
   ];
 
-  async function getNotificationData() {
-    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/notification_plans/`, {
+  async function getSubsData() {
+    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/subscriptions/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -186,14 +188,14 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       setPending(false);
     } else {
       setPending(false);
-      console.error('Get themes data ERROR');
+      console.error('Get subs data ERROR');
     }
   }
 
-  async function deleteNotif(id: string) {
+  async function deleteSubs(id: string) {
     setPending(true);
     setData([]);
-    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/notification_plans/${id}`, {
+    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/subscriptions/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -201,16 +203,16 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       }
     });
     if (res.ok) {
-      getNotificationData();
+      getSubsData();
     } else {
       setPending(false);
-      getNotificationData();
+      getSubsData();
       console.error('delete notif ERROR');
     }
   }
 
   useEffect(() => {
-    getNotificationData();
+    getSubsData();
   }, []);
 
   const table = useReactTable({
@@ -240,9 +242,9 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       <div className="flex items-center justify-between py-4 w-full">
         <div className="flex items-center gap-x-4 w-1/2">
           <Button onClick={() => {
-            router.push(`/${id}/create/createNotification`);
+            router.push(`/${id}/create/createSubs`);
           }}>
-            {t('createNotification')}
+            {t('createSubs')}
           </Button>
           <Input
             placeholder={t('searchByTheme')}
@@ -327,7 +329,7 @@ const NotificationTable: React.FC<Props> = ({id}) => {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} >
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="align-top">
                       {flexRender(
@@ -361,4 +363,4 @@ const NotificationTable: React.FC<Props> = ({id}) => {
   )
 }
 
-export {NotificationTable}
+export {SubscribeTable}

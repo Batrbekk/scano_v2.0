@@ -259,5 +259,11 @@
   "company_name": "Company",
   "email_list": "E-mail",
   "telegram_channel_ids": "Telegram",
-  "editNotificationTitle": "Editing a notification"
+  "editNotificationTitle": "Editing a notification",
+  "subheader": "Subtitle",
+  "createSubs": "Create a subscription",
+  "file_format_types": "Format",
+  "createSubsTitle": "Create a subscription",
+  "emailLimit": "You can enter several emails separated by commas (no more than {limit})",
+  "editSubsTitle": "Editing a subscription"
 }

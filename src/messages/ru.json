@@ -263,5 +263,11 @@
   "company_name": "Компания",
   "email_list": "E-mail",
   "telegram_channel_ids": "Telegram",
-  "editNotificationTitle": "Редактирование уведомления"
+  "editNotificationTitle": "Редактирование уведомления",
+  "subheader": "Подзаголовок",
+  "createSubs": "Создать подписку",
+  "file_format_types": "Формат",
+  "createSubsTitle": "Создание подписки",
+  "emailLimit": "Можно ввести несколько e-mail через запятую (не более {limit})",
+  "editSubsTitle": "Редактирование подписки"
 }

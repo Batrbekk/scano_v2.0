@@ -121,6 +121,17 @@ export type NotificationData = {
   };
 }
 
+export type SubscribeData = {
+  theme: {
+    id: string;
+    name: string;
+  };
+  file_format_types: string[];
+  emails: string[];
+  header: string;
+  subheader: string;
+}
+
 export type SubsData = {
   theme: {
     id: string,

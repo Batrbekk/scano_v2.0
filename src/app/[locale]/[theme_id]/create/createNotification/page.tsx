@@ -56,7 +56,7 @@ export default function Page () {
       body: JSON.stringify({
         telegram_channel_ids: [data.telegrams],
         email_list: data.users,
-        theme_id: themeId,
+        theme_id: data.theme,
         is_email: true,
         is_telegram: true
       }),

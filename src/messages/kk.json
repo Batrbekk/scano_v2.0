@@ -262,5 +262,11 @@
   "company_name": "Компания",
   "email_list": "E-mail",
   "telegram_channel_ids": "Telegram",
-  "editNotificationTitle": "Хабарландыруды өңдеу"
+  "editNotificationTitle": "Хабарландыруды өңдеу",
+  "subheader": "Подзаголовок",
+  "createSubs": "Жазылым жасаңыз",
+  "file_format_types": "Формат",
+  "createSubsTitle": "Жазылым жасаңыз",
+  "emailLimit": "Үтірмен бөлінген бірнеше электрондық поштаны енгізуге болады ({limit} көп емес)",
+  "editSubsTitle": "Жазылымды өңдеу"
 }
