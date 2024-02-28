@@ -191,7 +191,6 @@ const UsersTable: React.FC<Props> = ({id}) => {
     if (res.ok) {
       const data = await res.json();
       setData(data);
-      localStorage.setItem('themeList', JSON.stringify(data));
       setPending(false);
     } else {
       setPending(false);

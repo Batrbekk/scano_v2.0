@@ -31,7 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import {UserData} from "@/types";
+import {NotificationData, UserData} from "@/types";
 import {useEffect, useState} from "react";
 import {env} from "@/env.mjs";
 import {getCookie, setCookie} from "cookies-next";
@@ -68,9 +68,9 @@ const NotificationTable: React.FC<Props> = ({id}) => {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-  const [data, setData] = useState<UserData[]>([]);
+  const [data, setData] = useState<NotificationData[]>([]);
 
-  const columns: ColumnDef<UserData>[] = [
+  const columns: ColumnDef<NotificationData>[] = [
     {
       accessorKey: "_id",
       header: "#",
@@ -81,47 +81,46 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       ),
     },
     {
-      accessorKey: "photo_url",
-      header: t('photo_url'),
-      cell: ({row}) => (
-        <div className="capitalize cursor-pointer">
-          <AvatarFetch img_name={row.original.photo_url} />
-        </div>
-      )
-    },
-    {
-      accessorKey: "name",
-      header: t('userName'),
+      accessorKey: "theme",
+      header: t('theme'),
       cell: ({ row }) => (
         <div className="capitalize">
-          <p>{row.original.first_name ? row.original.first_name : t('nothing')} {row.original.last_name}</p>
+          <p>{row.original.theme.name}</p>
         </div>
       ),
     },
     {
-      accessorKey: "email",
+      accessorKey: "created_at",
+      header: t('created'),
+      cell: ({row}) => (
+        <div className="capitalize">
+          {format(new Date(row.original.created_at), 'dd/MM/yyyy')}
+        </div>
+      )
+    },
+    {
+      accessorKey: "email_list",
       header: 'E-mail',
       cell: ({row}) => (
         <div className="capitalize">
-          <a href={`mailto:${row.original.email}`}>{row.original.email}</a>
+          <ul className="list-disc [&>li]:mt-2">
+            {row.original.email_list.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       )
     },
     {
-      accessorKey: "company_name",
-      header: t('company'),
+      accessorKey: "telegram_channel_ids",
+      header: 'Telegram',
       cell: ({row}) => (
         <div className="capitalize">
-          <p>{row.original.company_name ? row.original.company_name : t('nothing')}</p>
-        </div>
-      )
-    },
-    {
-      accessorKey: "role",
-      header: t('role'),
-      cell: ({row}) => (
-        <div className="capitalize">
-          <p>{t(row.original.role)}</p>
+          <ul className="list-disc [&>li]:mt-2">
+            {row.original.telegram_channel_ids.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       )
     },
@@ -130,7 +129,7 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       header: t('action'),
       enableHiding: false,
       cell: ({row}) => {
-        const user = row.original
+        const notif = row.original
 
         return (
           <DropdownMenu>
@@ -143,7 +142,7 @@ const NotificationTable: React.FC<Props> = ({id}) => {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="gap-x-2 cursor-pointer"
-                onClick={() => navigator.clipboard.writeText(user._id)}
+                onClick={() => navigator.clipboard.writeText(notif._id)}
               >
                 <Copy size={14} />
                 {t('copy')} ID
@@ -152,8 +151,8 @@ const NotificationTable: React.FC<Props> = ({id}) => {
               <DropdownMenuItem
                 className="gap-x-2 cursor-pointer"
                 onClick={() => {
-                  setCookie('editUserData', user);
-                  router.push(`/${id}/edit/editUser`);
+                  setCookie('editNotifData', notif);
+                  router.push(`/${id}/edit/editNotif`);
                 }}
               >
                 <Pencil size={14} />
@@ -161,17 +160,10 @@ const NotificationTable: React.FC<Props> = ({id}) => {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="gap-x-2 cursor-pointer"
-                onClick={() => deleteUser(user._id)}
+                onClick={() => deleteNotif(notif._id)}
               >
                 <Trash2 size={14} />
                 {t('delete')}
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="gap-x-2 cursor-pointer"
-                onClick={() => isActiveUser(user._id, user.is_active)}
-              >
-                {user.is_active ? <PauseCircle size={14} /> : <PlayCircle size={14} />}
-                {user.is_active ? t('stop') : t('resume')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -180,8 +172,8 @@ const NotificationTable: React.FC<Props> = ({id}) => {
     },
   ];
 
-  async function getUsersData() {
-    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/users/`, {
+  async function getNotificationData() {
+    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/notification_plans/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -191,7 +183,6 @@ const NotificationTable: React.FC<Props> = ({id}) => {
     if (res.ok) {
       const data = await res.json();
       setData(data);
-      localStorage.setItem('themeList', JSON.stringify(data));
       setPending(false);
     } else {
       setPending(false);
@@ -199,10 +190,10 @@ const NotificationTable: React.FC<Props> = ({id}) => {
     }
   }
 
-  async function deleteUser(id: string) {
+  async function deleteNotif(id: string) {
     setPending(true);
     setData([]);
-    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/users/${id}`, {
+    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/notification_plans/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -210,36 +201,15 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       }
     });
     if (res.ok) {
-      getUsersData();
+      getNotificationData();
     } else {
       setPending(false);
-      console.error('delete themes ERROR');
-    }
-  }
-
-  async function isActiveUser(id: string, status: boolean) {
-    setPending(true);
-    setData([]);
-    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/users/${id}/`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        is_active: !status
-      }),
-    });
-    if (res.ok) {
-      getUsersData();
-    } else {
-      setPending(false);
-      console.error('ban user ERROR');
+      console.error('delete notif ERROR');
     }
   }
 
   useEffect(() => {
-    getUsersData();
+    getNotificationData();
   }, []);
 
   const table = useReactTable({
@@ -269,9 +239,9 @@ const NotificationTable: React.FC<Props> = ({id}) => {
       <div className="flex items-center justify-between py-4 w-full">
         <div className="flex items-center gap-x-4 w-1/2">
           <Button onClick={() => {
-            router.push(`/${id}/create/createUser`);
+            router.push(`/${id}/create/createNotification`);
           }}>
-            {t('createUser')}
+            {t('createNotification')}
           </Button>
           <Input
             placeholder={t('searchByEmail')}

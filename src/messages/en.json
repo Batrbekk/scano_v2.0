@@ -251,5 +251,13 @@
   "createUserInfo1": "The created user will be sent an email with a password. If necessary, the password can be changed in the settings.",
   "createUserInfo2": "The administrator has access to all topics with moderator mods, as well as creating new topics and adding users.",
   "createUserInfo3": "The moderator has the ability to view and edit topics for which he has moderator rights.",
-  "rule": "Rights"
+  "rule": "Rights",
+  "createNotification": "Create notification",
+  "createNotificationTitle": "Adding a notification",
+  "chooseSubs": "Select subscription",
+  "addTelegramChat": "Add Telegram chat",
+  "company_name": "Company",
+  "email_list": "E-mail",
+  "telegram_channel_ids": "Telegram",
+  "editNotificationTitle": "Editing a notification"
 }

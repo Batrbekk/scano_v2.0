@@ -103,3 +103,31 @@ export type MaterialData = {
   img_url: string;
   tags: string[];
 }
+
+export type NotificationData = {
+  created_at: string;
+  updated_at: string;
+  _id: string;
+  telegram_channel_ids: string[];
+  email_list: string[];
+  theme_id: string;
+  admin_id: string;
+  organization_id: string;
+  is_email: boolean;
+  is_telegram: boolean;
+  theme: {
+    id: string;
+    name: string;
+  };
+}
+
+export type SubsData = {
+  theme: {
+    id: string,
+    name: string
+  },
+  file_format_types: string[],
+  emails: string[],
+  header: string,
+  subheader: string
+}
