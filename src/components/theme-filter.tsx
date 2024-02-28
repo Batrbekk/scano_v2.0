@@ -285,8 +285,9 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
                                   }}
                                 />
                               </FormControl>
-                              <FormLabel className="!m-0">
-                                {item.label}
+                              <FormLabel className="!m-0 w-full !flex items-center justify-between">
+                                <p>{item.label}</p>
+                                <p>12</p>
                               </FormLabel>
                             </FormItem>
                           )
@@ -303,13 +304,14 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
               </h4>
               {materialType.map((item) => {
                 return (
-                  <div key={item.key} className="flex items-center space-x-2">
+                  <div key={item.key} className="w-full flex items-center space-x-2">
                     <Checkbox id={item.key}/>
                     <label
                       htmlFor={item.key}
-                      className="text-sm font-medium leading-none cursor-pointer"
+                      className="text-sm font-medium leading-none cursor-pointer w-full !flex items-center justify-between"
                     >
-                      {item.label}
+                      <p>{item.label}</p>
+                      <p>7</p>
                     </label>
                   </div>
                 )
@@ -325,9 +327,10 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
                     <Checkbox id={item.key}/>
                     <label
                       htmlFor={item.key}
-                      className="text-sm font-medium leading-none cursor-pointer"
+                      className="text-sm font-medium leading-none cursor-pointer w-full flex items-center justify-between"
                     >
-                      {item.label}
+                      <p>{item.label}</p>
+                      <p>6</p>
                     </label>
                   </div>
                 )
@@ -343,9 +346,10 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
                     <Checkbox id={item.key}/>
                     <label
                       htmlFor={item.key}
-                      className="text-sm font-medium leading-none cursor-pointer"
+                      className="text-sm font-medium leading-none cursor-pointer flex items-center justify-between w-full"
                     >
-                      {item.label}
+                      <p>{item.label}</p>
+                      <p>3</p>
                     </label>
                   </div>
                 )
