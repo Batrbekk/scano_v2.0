@@ -85,6 +85,11 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
     console.log(data);
   }
 
+  function chooseAll () {
+    const selectedMaterials = materials.slice(0, parseInt(count)).map(material => material._id);
+    form.setValue('materials_id', selectedMaterials);
+  }
+
   useEffect(() => {
     setPageCount(Math.ceil(materials.length / parseInt(count)));
   }, [materials, count]);
@@ -162,7 +167,7 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
                 />
                 <div className="flex items-center justify-between rounded">
                   <div className="flex items-center gap-x-4">
-                    <Button>{t('chooseAll')}</Button>
+                    <Button onClick={chooseAll}>{t('chooseAll')}</Button>
                     <Button>{t('delete')}</Button>
                   </div>
                   <Pagination>
