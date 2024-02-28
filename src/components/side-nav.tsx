@@ -134,14 +134,6 @@ const SideNav = () => {
                 <MailCheck size={20}/>
                 <p>{t('subscribe')}</p>
               </div>
-              <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
-                <Scroll size={20}/>
-                <p>{t('journal')}</p>
-              </div>
-              <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
-                <Trash2 size={20}/>
-                <p>{t('spam')}</p>
-              </div>
             </div>
           </div>
           <div className="border-b">
