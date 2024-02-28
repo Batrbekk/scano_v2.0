@@ -154,7 +154,7 @@ const SideNav = () => {
                     <div
                       className={cn(
                         'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
-                        lastPage === 'editProfile' && 'bg-gray-200 mb-2'
+                        lastPage === 'editProfile' && 'bg-gray-200 my-2'
                       )}
                       onClick={() => {
                         router.push(`/${themeId}/edit/editProfile`);
