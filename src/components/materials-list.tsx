@@ -197,48 +197,50 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
                     <Button onClick={() => {form.setValue('materials_id', [])}} variant="outline">{t('clearFilter')}</Button>
                     <Button onClick={deleteMaterial} variant="outline">{t('delete')}</Button>
                   </div>
-                  <Pagination>
-                    <PaginationContent>
-                      <PaginationItem>
-                        <PaginationPrevious
-                          disable={currentPage === 1}
-                          onClick={() => {
-                            if (currentPage === 1) {
-                              return
-                            } else {
-                              setCurrentPage(currentPage - 1);
-                            }
-                          }}
-                        />
-                      </PaginationItem>
-                      {pagesArray.map((item) => (
-                        <PaginationItem  className="cursor-pointer rounded border">
-                          <PaginationLink
-                            isActive={currentPage === item}
-                            text={item.toString()}
-                            className="rounded"
+                  {pagesArray.length > 1 && (
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious
+                            disable={currentPage === 1}
                             onClick={() => {
-                              setCurrentPage(item);
+                              if (currentPage === 1) {
+                                return
+                              } else {
+                                setCurrentPage(currentPage - 1);
+                              }
                             }}
-                          >
-                            {item}
-                          </PaginationLink>
+                          />
                         </PaginationItem>
-                      ))}
-                      <PaginationItem>
-                        <PaginationNext
-                          disable={currentPage === pagesArray.length}
-                          onClick={() => {
-                            if (currentPage === pagesArray.length) {
-                              return
-                            } else {
-                              setCurrentPage(currentPage + 1);
-                            }
-                          }}
-                        />
-                      </PaginationItem>
-                    </PaginationContent>
-                  </Pagination>
+                        {pagesArray.map((item) => (
+                          <PaginationItem  className="cursor-pointer rounded border">
+                            <PaginationLink
+                              isActive={currentPage === item}
+                              text={item.toString()}
+                              className="rounded"
+                              onClick={() => {
+                                setCurrentPage(item);
+                              }}
+                            >
+                              {item}
+                            </PaginationLink>
+                          </PaginationItem>
+                        ))}
+                        <PaginationItem>
+                          <PaginationNext
+                            disable={currentPage === pagesArray.length}
+                            onClick={() => {
+                              if (currentPage === pagesArray.length) {
+                                return
+                              } else {
+                                setCurrentPage(currentPage + 1);
+                              }
+                            }}
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  )}
                   <Select value={count} onValueChange={setCount}>
                     <SelectTrigger className="w-[72px]">
                       <SelectValue placeholder="Select a fruit" />
