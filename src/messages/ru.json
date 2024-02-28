@@ -269,5 +269,6 @@
   "file_format_types": "Формат",
   "createSubsTitle": "Создание подписки",
   "emailLimit": "Можно ввести несколько e-mail через запятую (не более {limit})",
-  "editSubsTitle": "Редактирование подписки"
+  "editSubsTitle": "Редактирование подписки",
+  "chooseAll": "Выбрать все"
 }

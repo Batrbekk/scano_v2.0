@@ -90,9 +90,7 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
   }
 
   return(
-      <div className="border p-4 rounded flex items-start gap-x-2">
-        {}
-        <Checkbox className="mt-0.5"/>
+      <div className="flex items-start gap-x-2">
         <div className="w-full flex items-start justify-between gap-x-4">
           <div className="flex flex-col gap-y-4">
             <div className="flex items-center gap-x-4">

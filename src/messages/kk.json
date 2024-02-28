@@ -268,5 +268,6 @@
   "file_format_types": "Формат",
   "createSubsTitle": "Жазылым жасаңыз",
   "emailLimit": "Үтірмен бөлінген бірнеше электрондық поштаны енгізуге болады ({limit} көп емес)",
-  "editSubsTitle": "Жазылымды өңдеу"
+  "editSubsTitle": "Жазылымды өңдеу",
+  "chooseAll": "Барлығын таңдау"
 }

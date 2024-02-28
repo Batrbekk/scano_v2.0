@@ -265,5 +265,6 @@
   "file_format_types": "Format",
   "createSubsTitle": "Create a subscription",
   "emailLimit": "You can enter several emails separated by commas (no more than {limit})",
-  "editSubsTitle": "Editing a subscription"
+  "editSubsTitle": "Editing a subscription",
+  "chooseAll": "Choose all"
 }
