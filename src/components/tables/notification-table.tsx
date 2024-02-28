@@ -244,10 +244,10 @@ const NotificationTable: React.FC<Props> = ({id}) => {
             {t('createNotification')}
           </Button>
           <Input
-            placeholder={t('searchByEmail')}
-            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+            placeholder={t('searchByTheme')}
+            value={(table.getColumn("theme")?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn("email")?.setFilterValue(event.target.value)
+              table.getColumn("theme")?.setFilterValue(event.target.value)
             }
             className="w-full max-w-xs"
           />
