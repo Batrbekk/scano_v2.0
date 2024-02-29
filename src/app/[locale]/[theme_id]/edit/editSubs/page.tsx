@@ -51,6 +51,7 @@ export default function Page () {
   const [themeId, setThemeId] = useState<string | null>(null);
 
   const FormSchema = z.object({
+    id: z.string(),
     theme: z.string(),
     mails: z.string(),
     format: z.array(z.string()),
@@ -61,6 +62,7 @@ export default function Page () {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      id: '',
       theme: '',
       mails: '',
       format: [],
@@ -71,7 +73,7 @@ export default function Page () {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
-    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/subscriptions/${data.theme}`, {
+    const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/subscriptions/${data.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -110,6 +112,7 @@ export default function Page () {
 
   useEffect(() => {
     if (sub) {
+      form.setValue('id', sub.id);
       form.setValue('theme', sub.theme.id);
       form.setValue('mails', sub.emails.join(', '));
       form.setValue('header', sub.header);

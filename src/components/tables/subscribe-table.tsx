@@ -162,7 +162,7 @@ const SubscribeTable: React.FC<Props> = ({id}) => {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="gap-x-2 cursor-pointer"
-                onClick={() => deleteSubs(notif.header)}
+                onClick={() => deleteSubs(notif.id)}
               >
                 <Trash2 size={14} />
                 {t('delete')}

@@ -20,6 +20,7 @@ import {
   PaginationNext,
   PaginationPrevious
 } from "@/components/ui/pagination";
+import {AlertTriangle} from "lucide-react";
 
 export interface Props {
   theme_id: string
@@ -132,134 +133,145 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
         <Skeleton className="h-48 w-full" />
       </div>
     ) : (
-        <div className="flex flex-col gap-y-8">
-          <div className="flex flex-col gap-y-4">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
-                <FormField
-                  name="materials_id"
-                  control={form.control}
-                  render={() => (
-                    <FormItem className="grid w-full items-center gap-1.5">
-                      <div className="flex flex-col gap-4">
-                        {materials.slice(0, parseInt(count)).map((item) => (
-                          <FormField
-                            key={item._id}
-                            name="materials_id"
-                            control={form.control}
-                            render={({field}) => {
-                              return (
-                                <FormItem
-                                  key={item._id}
-                                  className="flex items-start gap-x-2 rounded border p-4"
-                                >
-                                  <FormControl>
-                                    <Checkbox
-                                      checked={field.value?.includes(item._id)}
-                                      onCheckedChange={(checked) => {
-                                        return checked
-                                          ? field.onChange([...field.value, item._id])
-                                          : field.onChange(
-                                            field.value?.filter(
-                                              (value) => value !== item._id
-                                            )
+        materials.length > 0 ? (
+            <div className="flex flex-col gap-y-8">
+              <div className="flex flex-col gap-y-4">
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-4">
+                    <FormField
+                        name="materials_id"
+                        control={form.control}
+                        render={() => (
+                            <FormItem className="grid w-full items-center gap-1.5">
+                              <div className="flex flex-col gap-4">
+                                {materials.slice(0, parseInt(count)).map((item) => (
+                                    <FormField
+                                        key={item._id}
+                                        name="materials_id"
+                                        control={form.control}
+                                        render={({field}) => {
+                                          return (
+                                              <FormItem
+                                                  key={item._id}
+                                                  className="flex items-start gap-x-2 rounded border p-4"
+                                              >
+                                                <FormControl>
+                                                  <Checkbox
+                                                      checked={field.value?.includes(item._id)}
+                                                      onCheckedChange={(checked) => {
+                                                        return checked
+                                                            ? field.onChange([...field.value, item._id])
+                                                            : field.onChange(
+                                                                field.value?.filter(
+                                                                    (value) => value !== item._id
+                                                                )
+                                                            )
+                                                      }}
+                                                  />
+                                                </FormControl>
+                                                <FormLabel className="font-normal w-full !m-0">
+                                                  <MaterialCard
+                                                      sentiment={item.sentiment}
+                                                      key={item._id}
+                                                      id={item._id}
+                                                      title={item.title}
+                                                      date={item.created_at}
+                                                      text={item.description}
+                                                      tags={item.tags}
+                                                      img={item.img_url}
+                                                      url={item.url}
+                                                      src_name={item.source?.name}
+                                                      updateTags={handleUpdate}
+                                                  />
+                                                </FormLabel>
+                                              </FormItem>
                                           )
-                                      }}
+                                        }}
                                     />
-                                  </FormControl>
-                                  <FormLabel className="font-normal w-full !m-0">
-                                    <MaterialCard
-                                      sentiment={item.sentiment}
-                                      key={item._id}
-                                      id={item._id}
-                                      title={item.title}
-                                      date={item.created_at}
-                                      text={item.description}
-                                      tags={item.tags}
-                                      img={item.img_url}
-                                      url={item.url}
-                                      src_name={item.source?.name}
-                                      updateTags={handleUpdate}
-                                    />
-                                  </FormLabel>
-                                </FormItem>
-                              )
-                            }}
-                          />
-                        ))}
+                                ))}
+                              </div>
+                            </FormItem>
+                        )}
+                    />
+                    <div className="flex items-center justify-between rounded">
+                      <div className="flex items-center gap-x-4">
+                        <Button onClick={chooseAll} variant="outline">{t('chooseAll')}</Button>
+                        <Button onClick={() => {
+                          form.setValue('materials_id', [])
+                        }} variant="outline">{t('clearFilter')}</Button>
+                        <Button onClick={deleteMaterial} variant="outline">{t('delete')}</Button>
                       </div>
-                    </FormItem>
-                  )}
-                />
-                <div className="flex items-center justify-between rounded">
-                  <div className="flex items-center gap-x-4">
-                    <Button onClick={chooseAll} variant="outline">{t('chooseAll')}</Button>
-                    <Button onClick={() => {form.setValue('materials_id', [])}} variant="outline">{t('clearFilter')}</Button>
-                    <Button onClick={deleteMaterial} variant="outline">{t('delete')}</Button>
-                  </div>
-                  {pagesArray.length > 1 && (
-                    <Pagination>
-                      <PaginationContent>
-                        <PaginationItem>
-                          <PaginationPrevious
-                            disable={currentPage === 1}
-                            onClick={() => {
-                              if (currentPage === 1) {
-                                return
-                              } else {
-                                setCurrentPage(currentPage - 1);
-                              }
-                            }}
-                          />
-                        </PaginationItem>
-                        {pagesArray.map((item) => (
-                          <PaginationItem  className="cursor-pointer rounded border">
-                            <PaginationLink
-                              isActive={currentPage === item}
-                              text={item.toString()}
-                              className="rounded"
-                              onClick={() => {
-                                setCurrentPage(item);
-                              }}
-                            >
-                              {item}
-                            </PaginationLink>
-                          </PaginationItem>
-                        ))}
-                        <PaginationItem>
-                          <PaginationNext
-                            disable={currentPage === pagesArray.length}
-                            onClick={() => {
-                              if (currentPage === pagesArray.length) {
-                                return
-                              } else {
-                                setCurrentPage(currentPage + 1);
-                              }
-                            }}
-                          />
-                        </PaginationItem>
-                      </PaginationContent>
-                    </Pagination>
-                  )}
-                  <Select value={count} onValueChange={setCount}>
-                    <SelectTrigger className="w-[72px]">
-                      <SelectValue placeholder="Select a fruit" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        {listSize.map((item, index) => (
-                          <SelectItem key={index} value={item}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </form>
-            </Form>
-          </div>
-        </div>
+                      {pagesArray.length > 1 && (
+                          <Pagination>
+                            <PaginationContent>
+                              <PaginationItem>
+                                <PaginationPrevious
+                                    disable={currentPage === 1}
+                                    onClick={() => {
+                                      if (currentPage === 1) {
+                                        return
+                                      } else {
+                                        setCurrentPage(currentPage - 1);
+                                      }
+                                    }}
+                                />
+                              </PaginationItem>
+                              {pagesArray.map((item) => (
+                                  <PaginationItem className="cursor-pointer rounded border">
+                                    <PaginationLink
+                                        isActive={currentPage === item}
+                                        text={item.toString()}
+                                        className="rounded"
+                                        onClick={() => {
+                                          setCurrentPage(item);
+                                        }}
+                                    >
+                                      {item}
+                                    </PaginationLink>
+                                  </PaginationItem>
+                              ))}
+                              <PaginationItem>
+                                <PaginationNext
+                                    disable={currentPage === pagesArray.length}
+                                    onClick={() => {
+                                      if (currentPage === pagesArray.length) {
+                                        return
+                                      } else {
+                                        setCurrentPage(currentPage + 1);
+                                      }
+                                    }}
+                                />
+                              </PaginationItem>
+                            </PaginationContent>
+                          </Pagination>
+                      )}
+                      <Select value={count} onValueChange={setCount}>
+                        <SelectTrigger className="w-[72px]">
+                          <SelectValue placeholder="Select a fruit"/>
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {listSize.map((item, index) => (
+                                <SelectItem key={index} value={item}>
+                                  {item}
+                                </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </form>
+                </Form>
+              </div>
+            </div>
+        ) : (
+            <div className="flex flex-col items-center justify-center gap-y-4 rounded border p-4">
+              <AlertTriangle size={32} />
+              <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                {t('noData')}
+              </h4>
+            </div>
+        )
     )
   )
 }

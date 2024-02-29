@@ -122,6 +122,7 @@ export type NotificationData = {
 }
 
 export type SubscribeData = {
+  id: string,
   theme: {
     id: string;
     name: string;

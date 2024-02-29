@@ -151,7 +151,7 @@ export default function Page () {
                 material_types: data.materialTypes,
                 search_domains: data.searchArea,
                 language: data.language,
-                exclude_sources: data.excludeSource.split(/\s*,\s*/)
+                exclude_sources: []
             }),
         });
         if (res.ok) {
