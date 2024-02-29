@@ -1,6 +1,6 @@
 "use client"
 
-import {date} from "zod";
+import {date, z} from "zod";
 import Image from "next/image";
 import { cn } from "@/lib/utils"
 import { ru } from 'date-fns/locale';
@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@radix-ui/react-select";
 import React, {useEffect, useState} from 'react';
 import { Calendar } from "@/components/ui/calendar";
-import {CalendarIcon, Download, Filter, FilterX, X} from "lucide-react";
+import {CalendarIcon, Download} from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import Excel from "@/public/icons/excel.svg";
@@ -25,6 +25,9 @@ import {useToast} from "@/components/ui/use-toast";
 import {MaterialsList} from "@/components/materials-list";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import {ThemeFilter} from "@/components/theme-filter";
+import {FormProvider, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {FormSchema, FormValues} from "@/types/filter";
 
 export default function Main() {
   const { toast } = useToast();
@@ -46,6 +49,20 @@ export default function Main() {
 
   const [isExport, setIsExport] = useState<boolean>(false);
   const [exportToast, setExportToast] = useState<string>(t('exportToastPending'));
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      tone: [],
+      material_type: [],
+      language: [],
+      source_type: []
+    },
+  });
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(data);
+  }
 
   const getExportExcel = async () => {
     try {
@@ -75,6 +92,11 @@ export default function Main() {
   useEffect(() => {
     setThemeId(params.theme_id.toString());
   }, [params]);
+
+  useEffect(() => {
+    const latestToneValues = form.getValues('tone');
+    console.log(latestToneValues);
+  }, [form]);
 
   return (
     <ScrollArea className="h-screen">
@@ -294,11 +316,16 @@ export default function Main() {
               <h4 className="scroll-m-20 text-xl font-semibold tracking-tight border-r pr-4">
                 {t('filter')}
               </h4>
+              <div className="flex flex-wrap mx-4">
+                {form.getValues('tone')}
+              </div>
             </div>
             <MaterialsList theme_id={themeId}/>
           </div>
           <div className="w-1/4 flex flex-col items-end gap-y-4">
-            <ThemeFilter onlyButton={false} />
+            <FormProvider {...form}>
+              <ThemeFilter onlyButton={false} form={form} formSchema={FormSchema} onSubmit={onSubmit} />
+            </FormProvider>
           </div>
         </div>
       </div>

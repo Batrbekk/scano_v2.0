@@ -83,7 +83,7 @@ const SideNav = () => {
                     <div
                       className={cn(
                         "flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer",
-                        lengthPath === 2 && 'bg-gray-200 mb-2'
+                        lengthPath === 2 && 'bg-gray-200 my-2'
                       )}
                       onClick={() => {
                         router.push(`/${themeId}/`)
@@ -96,17 +96,50 @@ const SideNav = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
+                    <div
+                        className={cn(
+                            'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                            lastPage === 'processed' && 'bg-gray-200 my-2'
+                        )}
+                        onClick={() => {
+                          router.push(`/${themeId}/processed/`)
+                        }}
+                    >
+                      {lastPage === 'processed' && (
+                          <Minus size={16}/>
+                      )}
                       <p>{t('processed')}</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
+                    <div
+                        className={cn(
+                            'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                            lastPage === 'unprocessed' && 'bg-gray-200 my-2'
+                        )}
+                        onClick={() => {
+                          router.push(`/${themeId}/unprocessed/`)
+                        }}
+                    >
+                      {lastPage === 'unprocessed' && (
+                          <Minus size={16}/>
+                      )}
                       <p>{t('unprocessed')}</p>
                     </div>
                   </div>
                   <div className="flex flex-col gap-y-2 ml-2">
-                    <div className="flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer">
+                    <div
+                        className={cn(
+                            'flex items-center gap-x-4 p-2 rounded hover:bg-gray-200 cursor-pointer',
+                            lastPage === 'favourites' && 'bg-gray-200 my-2'
+                        )}
+                        onClick={() => {
+                          router.push(`/${themeId}/favourites/`)
+                        }}
+                    >
+                      {lastPage === 'favourites' && (
+                          <Minus size={16}/>
+                      )}
                       <p>{t('favorite')}</p>
                     </div>
                   </div>

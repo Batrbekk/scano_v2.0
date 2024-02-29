@@ -11,17 +11,25 @@ import {Filter, FilterX, X} from "lucide-react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Checkbox} from "@/components/ui/checkbox";
 import React, {useEffect} from "react";
-import {z} from "zod";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
+import {z, ZodArray, ZodObject, ZodString} from "zod";
+import {useForm, UseFormReturn} from "react-hook-form";
+import {FormValues} from "@/types/filter";
 import {Form, FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form";
 
 interface Props {
-  onlyButton: boolean
+  onlyButton: boolean;
+  form: UseFormReturn<FormValues>;
+  formSchema: ZodObject<{
+    tone: ZodArray<ZodString>;
+    material_type: ZodArray<ZodString>;
+    language: ZodArray<ZodString>;
+    source_type: ZodArray<ZodString>;
+  }>;
+  onSubmit: (data: FormValues) => Promise<void>;
 }
 
 
-const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
+const ThemeFilter: React.FC<Props> = ({onlyButton, form, formSchema, onSubmit}) => {
   const t = useTranslations();
 
   const toneOption = [
@@ -93,27 +101,6 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
     }
   ];
 
-  const FormSchema = z.object({
-    tone: z.array(z.string()),
-    material_type: z.array(z.string()),
-    language: z.array(z.string()),
-    source_type: z.array(z.string())
-  });
-
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      tone: [],
-      material_type: [],
-      language: [],
-      source_type: []
-    },
-  });
-
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-  }
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-y-4 items-end w-full">
@@ -124,7 +111,7 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
               {t('filter')}
             </Button>
           </AlertDialogTrigger>
-          <AlertDialogContent className="max-w-3xl">
+          <AlertDialogContent className="max-w-4xl">
             <AlertDialogHeader className="flex flex-row items-center justify-between w-full">
               <p className="text-lg font-medium">{t('filters')}</p>
               <div className="flex items-center gap-x-4">
@@ -132,11 +119,21 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
                   <X size={16}/>
                   {t('close')}
                 </AlertDialogCancel>
-                <Button variant="outline" className="gap-x-2">
+                <Button
+                    variant="outline"
+                    className="gap-x-2"
+                    onClick={() => {
+                      form.reset();
+                    }}
+                >
                   <FilterX size={16}/>
                   {t('clearFilter')}
                 </Button>
-                <Button variant="outline" className="gap-x-2">
+                <Button
+                    variant="outline"
+                    className="gap-x-2"
+                    onClick={form.handleSubmit(onSubmit)}
+                >
                   <Filter size={16}/>
                   {t('apply')}
                 </Button>
@@ -166,73 +163,169 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
                     <div className="bg-secondary p-4 rounded flex flex-col gap-y-4">
                       <small className="text-sm font-medium leading-none text-black">{t('tone')}</small>
                       <div className="flex items-center gap-x-4">
-                        {toneOption.map((item) => {
-                          return (
-                            <div key={item.key} className="flex items-center space-x-2">
-                              <Checkbox id={item.key}/>
-                              <label
-                                htmlFor={item.key}
-                                className="text-sm font-medium leading-none cursor-pointer"
-                              >
-                                {item.label}
-                              </label>
-                            </div>
-                          )
-                        })}
+                        <FormField
+                            name="tone"
+                            control={form.control}
+                            render={() => (
+                                <FormItem className="flex items-center gap-x-4 space-y-0">
+                                  {toneOption.map((item) => (
+                                      <FormField
+                                          key={item.key}
+                                          name="tone"
+                                          control={form.control}
+                                          render={({field}) => {
+                                            return (
+                                                <FormItem
+                                                    key={item.key}
+                                                    className="flex items-center gap-x-2"
+                                                >
+                                                  <FormControl>
+                                                    <Checkbox
+                                                        checked={field.value?.includes(item.key)}
+                                                        onCheckedChange={(checked) => {
+                                                          return checked
+                                                              ? field.onChange([...field.value, item.key])
+                                                              : field.onChange(field.value?.filter((value: string) => value !== item.key))
+                                                        }}
+                                                    />
+                                                  </FormControl>
+                                                  <FormLabel className="!m-0 w-full !flex items-center justify-between">
+                                                    <p>{item.label}</p>
+                                                  </FormLabel>
+                                                </FormItem>
+                                            )
+                                          }}
+                                      />
+                                  ))}
+                                </FormItem>
+                            )}
+                        />
                       </div>
                     </div>
                     <div className="bg-secondary p-4 rounded flex flex-col gap-y-4">
                       <small className="text-sm font-medium leading-none text-black">{t('materialType')}</small>
                       <div className="flex items-center gap-x-4">
-                        {materialType.map((item) => {
-                          return (
-                            <div key={item.key} className="flex items-center space-x-2">
-                              <Checkbox id={item.key}/>
-                              <label
-                                htmlFor={item.key}
-                                className="text-sm font-medium leading-none cursor-pointer"
-                              >
-                                {item.label}
-                              </label>
-                            </div>
-                          )
-                        })}
+                        <FormField
+                            name="material_type"
+                            control={form.control}
+                            render={() => (
+                                <FormItem className="flex items-center gap-x-4 space-y-0">
+                                  {materialType.map((item) => (
+                                      <FormField
+                                          key={item.key}
+                                          name="material_type"
+                                          control={form.control}
+                                          render={({field}) => {
+                                            return (
+                                                <FormItem
+                                                    key={item.key}
+                                                    className="flex items-center gap-x-2"
+                                                >
+                                                  <FormControl>
+                                                    <Checkbox
+                                                        checked={field.value?.includes(item.key)}
+                                                        onCheckedChange={(checked) => {
+                                                          return checked
+                                                              ? field.onChange([...field.value, item.key])
+                                                              : field.onChange(field.value?.filter((value: string) => value !== item.key))
+                                                        }}
+                                                    />
+                                                  </FormControl>
+                                                  <FormLabel className="!m-0 w-full !flex items-center justify-between">
+                                                    <p>{item.label}</p>
+                                                  </FormLabel>
+                                                </FormItem>
+                                            )
+                                          }}
+                                      />
+                                  ))}
+                                </FormItem>
+                            )}
+                        />
                       </div>
                     </div>
                     <div className="bg-secondary p-4 rounded flex flex-col gap-y-4">
                       <small className="text-sm font-medium leading-none text-black">{t('materialLang')}</small>
                       <div className="flex items-center gap-x-4">
-                        {lang.map((item) => {
-                          return (
-                            <div key={item.key} className="flex items-center space-x-2">
-                              <Checkbox id={item.key}/>
-                              <label
-                                htmlFor={item.key}
-                                className="text-sm font-medium leading-none cursor-pointer"
-                              >
-                                {item.label}
-                              </label>
-                            </div>
-                          )
-                        })}
+                        <FormField
+                            name="language"
+                            control={form.control}
+                            render={() => (
+                                <FormItem className="flex items-center gap-x-4 space-y-0">
+                                  {lang.map((item) => (
+                                      <FormField
+                                          key={item.key}
+                                          name="language"
+                                          control={form.control}
+                                          render={({field}) => {
+                                            return (
+                                                <FormItem
+                                                    key={item.key}
+                                                    className="flex items-center gap-x-2"
+                                                >
+                                                  <FormControl>
+                                                    <Checkbox
+                                                        checked={field.value?.includes(item.key)}
+                                                        onCheckedChange={(checked) => {
+                                                          return checked
+                                                              ? field.onChange([...field.value, item.key])
+                                                              : field.onChange(field.value?.filter((value: string) => value !== item.key))
+                                                        }}
+                                                    />
+                                                  </FormControl>
+                                                  <FormLabel className="!m-0 w-full !flex items-center justify-between">
+                                                    <p>{item.label}</p>
+                                                  </FormLabel>
+                                                </FormItem>
+                                            )
+                                          }}
+                                      />
+                                  ))}
+                                </FormItem>
+                            )}
+                        />
                       </div>
                     </div>
                     <div className="bg-secondary p-4 rounded flex flex-col gap-y-4">
                       <small className="text-sm font-medium leading-none text-black">{t('srcType')}</small>
                       <div className="flex flex-wrap items-center gap-4">
-                        {collection.map((item) => {
-                          return (
-                            <div key={item.key} className="flex items-center space-x-2">
-                              <Checkbox id={item.key}/>
-                              <label
-                                htmlFor={item.key}
-                                className="text-sm font-medium leading-none cursor-pointer"
-                              >
-                                {item.label}
-                              </label>
-                            </div>
-                          )
-                        })}
+                        <FormField
+                            name="source_type"
+                            control={form.control}
+                            render={() => (
+                                <FormItem className="flex items-center gap-x-4 space-y-0">
+                                  {collection.map((item) => (
+                                      <FormField
+                                          key={item.key}
+                                          name="source_type"
+                                          control={form.control}
+                                          render={({field}) => {
+                                            return (
+                                                <FormItem
+                                                    key={item.key}
+                                                    className="flex items-center gap-x-2"
+                                                >
+                                                  <FormControl>
+                                                    <Checkbox
+                                                        checked={field.value?.includes(item.key)}
+                                                        onCheckedChange={(checked) => {
+                                                          return checked
+                                                              ? field.onChange([...field.value, item.key])
+                                                              : field.onChange(field.value?.filter((value: string) => value !== item.key))
+                                                        }}
+                                                    />
+                                                  </FormControl>
+                                                  <FormLabel className="!m-0 w-full !flex items-center justify-between">
+                                                    <p>{item.label}</p>
+                                                  </FormLabel>
+                                                </FormItem>
+                                            )
+                                          }}
+                                      />
+                                  ))}
+                                </FormItem>
+                            )}
+                        />
                       </div>
                     </div>
                   </div>
@@ -281,7 +374,7 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
                                   onCheckedChange={(checked) => {
                                     return checked
                                       ? field.onChange([...field.value, item.key])
-                                      : field.onChange(field.value?.filter((value) => value !== item.key))
+                                      : field.onChange(field.value?.filter((value: string) => value !== item.key))
                                   }}
                                 />
                               </FormControl>
@@ -302,60 +395,132 @@ const ThemeFilter: React.FC<Props> = ({onlyButton}) => {
               <h4 className="text-lg font-semibold">
                 {t('materialType')}
               </h4>
-              {materialType.map((item) => {
-                return (
-                  <div key={item.key} className="w-full flex items-center space-x-2">
-                    <Checkbox id={item.key}/>
-                    <label
-                      htmlFor={item.key}
-                      className="text-sm font-medium leading-none cursor-pointer w-full !flex items-center justify-between"
-                    >
-                      <p>{item.label}</p>
-                      <p>7</p>
-                    </label>
-                  </div>
-                )
-              })}
+              <FormField
+                  name="material_type"
+                  control={form.control}
+                  render={() => (
+                      <FormItem>
+                        {materialType.map((item) => (
+                            <FormField
+                                key={item.key}
+                                name="material_type"
+                                control={form.control}
+                                render={({field}) => {
+                                  return (
+                                      <FormItem
+                                          key={item.key}
+                                          className="flex items-center gap-x-2"
+                                      >
+                                        <FormControl>
+                                          <Checkbox
+                                              checked={field.value?.includes(item.key)}
+                                              onCheckedChange={(checked) => {
+                                                return checked
+                                                    ? field.onChange([...field.value, item.key])
+                                                    : field.onChange(field.value?.filter((value: string) => value !== item.key))
+                                              }}
+                                          />
+                                        </FormControl>
+                                        <FormLabel className="!m-0 w-full !flex items-center justify-between">
+                                          <p>{item.label}</p>
+                                          <p>12</p>
+                                        </FormLabel>
+                                      </FormItem>
+                                  )
+                                }}
+                            />
+                        ))}
+                      </FormItem>
+                  )}
+              />
             </div>
             <div className="flex flex-col gap-y-2.5 pb-4 border-b">
               <h4 className="text-lg font-semibold">
                 {t('materialLang')}
               </h4>
-              {lang.map((item) => {
-                return (
-                  <div key={item.key} className="flex items-center space-x-2">
-                    <Checkbox id={item.key}/>
-                    <label
-                      htmlFor={item.key}
-                      className="text-sm font-medium leading-none cursor-pointer w-full flex items-center justify-between"
-                    >
-                      <p>{item.label}</p>
-                      <p>6</p>
-                    </label>
-                  </div>
-                )
-              })}
+              <FormField
+                  name="language"
+                  control={form.control}
+                  render={() => (
+                      <FormItem>
+                        {lang.map((item) => (
+                            <FormField
+                                key={item.key}
+                                name="language"
+                                control={form.control}
+                                render={({field}) => {
+                                  return (
+                                      <FormItem
+                                          key={item.key}
+                                          className="flex items-center gap-x-2"
+                                      >
+                                        <FormControl>
+                                          <Checkbox
+                                              checked={field.value?.includes(item.key)}
+                                              onCheckedChange={(checked) => {
+                                                return checked
+                                                    ? field.onChange([...field.value, item.key])
+                                                    : field.onChange(field.value?.filter((value: string) => value !== item.key))
+                                              }}
+                                          />
+                                        </FormControl>
+                                        <FormLabel className="!m-0 w-full !flex items-center justify-between">
+                                          <p>{item.label}</p>
+                                          <p>12</p>
+                                        </FormLabel>
+                                      </FormItem>
+                                  )
+                                }}
+                            />
+                        ))}
+                      </FormItem>
+                  )}
+              />
             </div>
             <div className="flex flex-col gap-y-2.5">
               <h4 className="text-lg font-semibold">
                 {t('srcType')}
               </h4>
-              {collection.map((item) => {
-                return (
-                  <div key={item.key} className="flex items-center space-x-2">
-                    <Checkbox id={item.key}/>
-                    <label
-                      htmlFor={item.key}
-                      className="text-sm font-medium leading-none cursor-pointer flex items-center justify-between w-full"
-                    >
-                      <p>{item.label}</p>
-                      <p>3</p>
-                    </label>
-                  </div>
-                )
-              })}
+              <FormField
+                  name="source_type"
+                  control={form.control}
+                  render={() => (
+                      <FormItem>
+                        {collection.map((item) => (
+                            <FormField
+                                key={item.key}
+                                name="source_type"
+                                control={form.control}
+                                render={({field}) => {
+                                  return (
+                                      <FormItem
+                                          key={item.key}
+                                          className="flex items-center gap-x-2"
+                                      >
+                                        <FormControl>
+                                          <Checkbox
+                                              checked={field.value?.includes(item.key)}
+                                              onCheckedChange={(checked) => {
+                                                return checked
+                                                    ? field.onChange([...field.value, item.key])
+                                                    : field.onChange(field.value?.filter((value: string) => value !== item.key))
+                                              }}
+                                          />
+                                        </FormControl>
+                                        <FormLabel className="!m-0 w-full !flex items-center justify-between">
+                                          <p>{item.label}</p>
+                                          <p>12</p>
+                                        </FormLabel>
+                                      </FormItem>
+                                  )
+                                }}
+                            />
+                        ))}
+                      </FormItem>
+                  )}
+              />
             </div>
-            <Button>{t('apply')}</Button>
+            <Button type="submit">{t('apply')}</Button>
           </div>
         )}
       </form>
