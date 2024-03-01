@@ -5,7 +5,7 @@ import {Input} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
-import {date} from "zod";
+import {date, z} from "zod";
 import {format} from "date-fns";
 import {CalendarIcon, Download} from "lucide-react";
 import {Select} from "@radix-ui/react-select";
@@ -31,6 +31,9 @@ import {Sources} from "@/components/view/analytic/sources";
 import {Authors} from "@/components/view/analytic/authors";
 import {Geography} from "@/components/view/analytic/geography";
 import {Tags} from "@/components/view/analytic/tags";
+import {FormSchema, FormValues} from "@/types/filter";
+import {FormProvider, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 export default function Page () {
   const { toast } = useToast();
@@ -53,6 +56,26 @@ export default function Page () {
   const [startMin, setStartMin] = React.useState('00');
   const [endHour, setEndHour] = React.useState('00');
   const [endMin, setEndMin] = React.useState('00');
+
+  const [filter, setFilter] = useState<string[]>([]);
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      tone: [],
+      material_type: [],
+      language: [],
+      source_type: []
+    },
+  });
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const { tone, material_type, language, source_type } = data;
+
+    const combinedFilter = [...tone, ...material_type, ...language, ...source_type];
+
+    setFilter(combinedFilter);
+  }
 
   const tabs = [
     {
@@ -322,7 +345,9 @@ export default function Page () {
           <h4 className="scroll-m-20 text-xl font-semibold tracking-tight border-r pr-4">
             {t('filter')}
           </h4>
-          <ThemeFilter onlyButton={true}/>
+          <FormProvider {...form}>
+            <ThemeFilter onlyButton={true} form={form} formSchema={FormSchema} onSubmit={onSubmit} />
+          </FormProvider>
         </div>
         <div className="w-full">
           <Tabs defaultValue="review" className="w-full">
