@@ -269,5 +269,8 @@
   "createSubsTitle": "Жазылым жасаңыз",
   "emailLimit": "Үтірмен бөлінген бірнеше электрондық поштаны енгізуге болады ({limit} көп емес)",
   "editSubsTitle": "Жазылымды өңдеу",
-  "chooseAll": "Барлығын таңдау"
+  "chooseAll": "Барлығын таңдау",
+  "social_network": "Әлеуметтік желілер",
+  "messenger_chanel": "Мессенджер арнасы",
+  "messenger_group": "Мессенджер тобы"
 }

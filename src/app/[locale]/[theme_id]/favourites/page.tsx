@@ -11,7 +11,7 @@ import {Input} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Button} from "@/components/ui/button";
-import {date} from "zod";
+import {date, z} from "zod";
 import {format} from "date-fns";
 import {CalendarIcon, Download} from "lucide-react";
 import {Select} from "@radix-ui/react-select";
@@ -24,6 +24,9 @@ import Word from "@/public/icons/word.svg";
 import Pdf from "@/public/icons/pdf.svg";
 import {MaterialsList} from "@/components/materials-list";
 import {ThemeFilter} from "@/components/theme-filter";
+import {FormSchema, FormValues} from "@/types/filter";
+import {FormProvider, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 
 export default function Page () {
     const { toast } = useToast();
@@ -45,6 +48,20 @@ export default function Page () {
 
     const [isExport, setIsExport] = useState<boolean>(false);
     const [exportToast, setExportToast] = useState<string>(t('exportToastPending'));
+
+    const form = useForm<FormValues>({
+        resolver: zodResolver(FormSchema),
+        defaultValues: {
+            tone: [],
+            material_type: [],
+            language: [],
+            source_type: []
+        },
+    });
+
+    async function onSubmit(data: z.infer<typeof FormSchema>) {
+        console.log(data);
+    }
 
     const getExportExcel = async () => {
         try {
@@ -294,10 +311,12 @@ export default function Page () {
                                 {t('filter')}
                             </h4>
                         </div>
-                        <MaterialsList theme_id={themeId}/>
+                        <MaterialsList theme_id={themeId} favourite={true} />
                     </div>
                     <div className="w-1/4 flex flex-col items-end gap-y-4">
-                        <ThemeFilter onlyButton={false} />
+                        <FormProvider {...form}>
+                            <ThemeFilter onlyButton={false} form={form} formSchema={FormSchema} onSubmit={onSubmit} />
+                        </FormProvider>
                     </div>
                 </div>
             </div>

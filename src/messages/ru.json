@@ -270,5 +270,8 @@
   "createSubsTitle": "Создание подписки",
   "emailLimit": "Можно ввести несколько e-mail через запятую (не более {limit})",
   "editSubsTitle": "Редактирование подписки",
-  "chooseAll": "Выбрать все"
+  "chooseAll": "Выбрать все",
+  "social_network": "Социальные сети",
+  "messenger_chanel": "Канал в мессенджерах",
+  "messenger_group": "Группы в мессенджерах"
 }

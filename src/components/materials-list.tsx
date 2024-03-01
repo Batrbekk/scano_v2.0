@@ -23,12 +23,15 @@ import {
 import {AlertTriangle} from "lucide-react";
 
 export interface Props {
-  theme_id: string
+  theme_id: string;
+  processed?: boolean;
+  unprocessed?: boolean;
+  favourite?:boolean;
 }
 
 const listSize = ['5', '10', '20', '30', '40', '50'];
 
-const MaterialsList: React.FC<Props> = ({theme_id}) => {
+const MaterialsList: React.FC<Props> = ({theme_id, processed, unprocessed, favourite}) => {
   const t = useTranslations();
   const token = getCookie('scano_acess_token');
   const [pending, setPending] = useState<boolean>(true);
@@ -51,14 +54,18 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
   });
 
   async function getMaterials() {
+    setMaterials([]);
+    setPending(true);
     try {
-      const res = await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/themes/${theme_id}/materials`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const res = await fetch(
+        `${env.NEXT_PUBLIC_SCANO_API}/api/v1/themes/${theme_id}/materials${processed ? '?is_processed=true' : ''}${unprocessed ? '?is_not_processed=true' : ''}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
       if (res.ok) {
         const data = await res.json();
         setMaterials(data);
@@ -182,6 +189,8 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
                                                       url={item.url}
                                                       src_name={item.source?.name}
                                                       updateTags={handleUpdate}
+                                                      is_favourite={item.is_favourite}
+                                                      is_processed={item.is_processed}
                                                   />
                                                 </FormLabel>
                                               </FormItem>
@@ -245,20 +254,22 @@ const MaterialsList: React.FC<Props> = ({theme_id}) => {
                             </PaginationContent>
                           </Pagination>
                       )}
-                      <Select value={count} onValueChange={setCount}>
-                        <SelectTrigger className="w-[72px]">
-                          <SelectValue placeholder="Select a fruit"/>
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            {listSize.map((item, index) => (
+                      {pagesArray.length > 1 && (
+                        <Select value={count} onValueChange={setCount}>
+                          <SelectTrigger className="w-[72px]">
+                            <SelectValue placeholder="Select a fruit"/>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {listSize.map((item, index) => (
                                 <SelectItem key={index} value={item}>
                                   {item}
                                 </SelectItem>
-                            ))}
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
                     </div>
                   </form>
                 </Form>

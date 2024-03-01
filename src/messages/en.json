@@ -266,5 +266,8 @@
   "createSubsTitle": "Create a subscription",
   "emailLimit": "You can enter several emails separated by commas (no more than {limit})",
   "editSubsTitle": "Editing a subscription",
-  "chooseAll": "Choose all"
+  "chooseAll": "Choose all",
+  "social_network": "Social media",
+  "messenger_chanel": "Messenger channel",
+  "messenger_group": "Groups in messengers"
 }

@@ -32,13 +32,16 @@ interface Props {
   src_name: string;
   updateTags: () => void;
   sentiment: string;
+  is_favourite: boolean;
+  is_processed: boolean;
 }
 
-const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img, url, src_name, updateTags}) => {
+const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img, url, src_name, updateTags, is_favourite, is_processed}) => {
   const t = useTranslations();
   const router = useRouter();
 
   const token = getCookie('scano_acess_token');
+  const [pending, setPending] = useState<boolean>(true);
   const [tone, setTone] = useState<string | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
@@ -54,10 +57,66 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
         }
       });
       if (res.ok) {
+        setPending(false);
         setPhoto(res.url);
       }
     } catch (e) {
+      setPending(false);
       console.error(e);
+    }
+  }
+
+  async function isFavouriteCard(id: string, state: boolean) {
+    try {
+      if (state) {
+        await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/materials/${id}/set_as_not_favourite`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      } else {
+        await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/materials/${id}/set_as_favourite`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      updateTags();
+    }
+  }
+
+  async function isProcessedCard(id: string, state: boolean) {
+    console.log(id);
+    console.log(state);
+    try {
+      if (state) {
+        await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/materials/${id}/set_as_not_proccessed`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      } else {
+        await fetch(`${env.NEXT_PUBLIC_SCANO_API}/api/v1/materials/${id}/set_as_processed`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      updateTags();
     }
   }
 
@@ -79,6 +138,8 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
   }
 
   useEffect(() => {
+    setIsFavorite(is_favourite);
+    setIsProcessed(is_processed);
     setTone(sentiment);
     if (img) {
       getPhoto(img);
@@ -137,7 +198,7 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
               <TooltipProvider delayDuration={400}>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Button variant="outline" size="sm" onClick={() => {setIsProcessed(!isProcessed)}}>
+                    <Button variant="outline" size="sm" onClick={() => {isProcessedCard(id, isProcessed)}}>
                       {isProcessed ? <ShieldCheck size={20} className={cn(
                         isProcessed && 'stroke-blue-500'
                       )} /> : <ShieldXIcon size={20} />}
@@ -148,52 +209,52 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-              <Popover>
-                <PopoverTrigger>
-                  <TooltipProvider>
-                    <Tooltip delayDuration={400}>
-                      <TooltipTrigger>
-                        <Button variant="outline" size="sm">
-                          {tone === 'negative' && (<Frown className="stroke-red-500" size={20}/>)}
-                          {tone === 'neutral' && (<Meh className="stroke-blue-500" size={20}/>)}
-                          {tone === 'positive' && (<Smile className="stroke-primeGreen" size={20}/>)}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        {t(tone)}
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div className="flex items-center gap-x-4">
-                    <Button onClick={() => {
-                      changeTone('negative')
-                    }} variant="outline" size="sm"
-                            className={cn(tone === 'negative' && 'bg-red-500 hover:bg-red-500 text-white hover:text-white')}>
-                      <Frown size={20}/>
-                    </Button>
-                    <Button onClick={() => {
-                      changeTone('neutral')
-                    }} variant="outline" size="sm"
-                            className={cn(tone === 'neutral' && 'bg-blue-500 hover:bg-blue-500 text-white hover:text-white')}>
-                      <Meh size={20}/>
-                    </Button>
-                    <Button onClick={() => {
-                      changeTone('positive')
-                    }} variant="outline" size="sm"
-                            className={cn(tone === 'positive' && 'bg-primeGreen hover:bg-primeGreen text-white hover:text-white')}>
-                      <Smile size={20}/>
-                    </Button>
-                  </div>
-                </PopoverContent>
-              </Popover>
+              {tone && (
+                <Popover>
+                  <PopoverTrigger>
+                    <TooltipProvider>
+                      <Tooltip delayDuration={400}>
+                        <TooltipTrigger>
+                          <Button variant="outline" size="sm">
+                            {tone === 'negative' && (<Frown className="stroke-red-500" size={20}/>)}
+                            {tone === 'neutral' && (<Meh className="stroke-blue-500" size={20}/>)}
+                            {tone === 'positive' && (<Smile className="stroke-primeGreen" size={20}/>)}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {t(tone)}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <div className="flex items-center gap-x-4">
+                      <Button onClick={() => {
+                        changeTone('negative')
+                      }} variant="outline" size="sm"
+                              className={cn(tone === 'negative' && 'bg-red-500 hover:bg-red-500 text-white hover:text-white')}>
+                        <Frown size={20}/>
+                      </Button>
+                      <Button onClick={() => {
+                        changeTone('neutral')
+                      }} variant="outline" size="sm"
+                              className={cn(tone === 'neutral' && 'bg-blue-500 hover:bg-blue-500 text-white hover:text-white')}>
+                        <Meh size={20}/>
+                      </Button>
+                      <Button onClick={() => {
+                        changeTone('positive')
+                      }} variant="outline" size="sm"
+                              className={cn(tone === 'positive' && 'bg-primeGreen hover:bg-primeGreen text-white hover:text-white')}>
+                        <Smile size={20}/>
+                      </Button>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              )}
               <TooltipProvider>
                 <Tooltip delayDuration={400}>
                   <TooltipTrigger>
-                    <Button variant="outline" size="sm" onClick={() => {
-                      setIsFavorite(!isFavorite)
-                    }}>
+                    <Button variant="outline" size="sm" onClick={() => {isFavouriteCard(id, isFavorite)}}>
                       <Star className={cn(isFavorite ? 'fill-amber-300 stroke-amber-300' : '')} size={16}/>
                     </Button>
                   </TooltipTrigger>
@@ -240,12 +301,16 @@ const MaterialCard: React.FC<Props> = ({id, sentiment, title,date,text,tags,img,
                 </AlertDialogContent>
               </AlertDialog>
             </div>
-            {photo ? (
-                <div className="rounded overflow-hidden w-fit border border-black">
-                  <Image src={photo} alt="material img" width={200} height={100}/>
-                </div>
+            {img ? (
+                photo ? (
+                  <div className="rounded overflow-hidden w-fit border border-black">
+                    <Image src={photo} alt="material img" width={200} height={100}/>
+                  </div>
+                ) : (
+                  <div></div>
+                )
             ) : (
-                <Skeleton className="w-[200px] h-[100px]"/>
+              pending ? <Skeleton className="w-[200px] h-[100px]"/> : <div>asd</div>
             )}
           </div>
         </div>

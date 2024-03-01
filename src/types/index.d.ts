@@ -102,6 +102,8 @@ export type MaterialData = {
   real_created_at: string;
   img_url: string;
   tags: string[];
+  is_processed: boolean;
+  is_favourite: boolean;
 }
 
 export type NotificationData = {

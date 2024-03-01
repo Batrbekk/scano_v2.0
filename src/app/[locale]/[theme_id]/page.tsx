@@ -28,6 +28,7 @@ import {ThemeFilter} from "@/components/theme-filter";
 import {FormProvider, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FormSchema, FormValues} from "@/types/filter";
+import {Badge} from "@/components/ui/badge";
 
 export default function Main() {
   const { toast } = useToast();
@@ -50,6 +51,8 @@ export default function Main() {
   const [isExport, setIsExport] = useState<boolean>(false);
   const [exportToast, setExportToast] = useState<string>(t('exportToastPending'));
 
+  const [filter, setFilter] = useState<string[]>([]);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -61,7 +64,11 @@ export default function Main() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    const { tone, material_type, language, source_type } = data;
+
+    const combinedFilter = [...tone, ...material_type, ...language, ...source_type];
+
+    setFilter(combinedFilter);
   }
 
   const getExportExcel = async () => {
@@ -92,11 +99,6 @@ export default function Main() {
   useEffect(() => {
     setThemeId(params.theme_id.toString());
   }, [params]);
-
-  useEffect(() => {
-    const latestToneValues = form.getValues('tone');
-    console.log(latestToneValues);
-  }, [form]);
 
   return (
     <ScrollArea className="h-screen">
@@ -312,12 +314,14 @@ export default function Main() {
         </div>
         <div className="flex items-start justify-between gap-x-8 pb-10">
           <div className="w-3/4 flex flex-col gap-y-4 mb-20">
-            <div className="h-10 flex items-center">
+            <div className="py-4 flex items-center">
               <h4 className="scroll-m-20 text-xl font-semibold tracking-tight border-r pr-4">
                 {t('filter')}
               </h4>
-              <div className="flex flex-wrap mx-4">
-                {form.getValues('tone')}
+              <div className="flex flex-wrap gap-2 mx-4">
+                {filter.map((item, index) => (
+                  <Badge key={index}>{t(item)}</Badge>
+                ))}
               </div>
             </div>
             <MaterialsList theme_id={themeId}/>
