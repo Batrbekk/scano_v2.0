@@ -71,10 +71,10 @@ export default function Main() {
     setFilter(combinedFilter);
   }
 
-  const getExportExcel = async () => {
+  const getExport = async (type: string) => {
     try {
       const res = await fetch(
-        `${env.NEXT_PUBLIC_SCANO_API}/api/v1/themes/${themeId}/download_excel_report`,
+        `${env.NEXT_PUBLIC_SCANO_API}/api/v1/themes/${themeId}/${type === 'excel' ? '' : 'analytics/'}download_${type}_report`,
         {
           method: 'GET',
           headers: {
@@ -285,7 +285,7 @@ export default function Main() {
                   toast({
                     description: exportToast
                   })
-                  getExportExcel()
+                  getExport('excel');
                 }}
               >
                 <Image src={Excel} alt="excel-icon"/>
@@ -295,6 +295,7 @@ export default function Main() {
                 className="cursor-pointer hover:bg-secondary p-2 rounded flex items-center gap-x-4"
                 onClick={() => {
                   setIsExport(false);
+                  getExport('word');
                 }}
               >
                 <Image src={Word} alt="excel-icon"/>
@@ -304,6 +305,7 @@ export default function Main() {
                 className="cursor-pointer hover:bg-secondary p-2 rounded flex items-center gap-x-4"
                 onClick={() => {
                   setIsExport(false);
+                  getExport('pdf');
                 }}
               >
                 <Image src={Pdf} alt="excel-icon"/>
