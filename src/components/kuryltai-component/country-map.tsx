@@ -10,6 +10,7 @@ import Telegram from "@/public/icons/telegram.svg";
 import X from "@/public/icons/x.svg";
 import Image from "next/image";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {ScrollArea} from "@/components/ui/scroll-area";
 
 interface Props {
     country: string;
@@ -182,7 +183,10 @@ const CountryMap: React.FC<Props> = ({ country, objects }) => {
                                         <div className="flex flex-wrap gap-4">
                                             {currentPoint.attributes.representatives.data.map((item: any) => (
                                                 <div key={item.id} className="flex items-start gap-x-2 rounded border p-4">
-                                                    <img src={item.attributes.avatar} alt="avatar" className="w-20" />
+                                                    {item.attributes.avatar && (
+                                                        <img src={item.attributes.avatar} alt="avatar"
+                                                             className="w-20"/>
+                                                    )}
                                                     <div className="flex flex-col items-start">
                                                         <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{item.attributes.name}</h4>
                                                         <p>{item.attributes.dateOfBirth}</p>
@@ -225,61 +229,69 @@ const CountryMap: React.FC<Props> = ({ country, objects }) => {
                                             </ul>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-x-2">
-                                        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Әлеуметтік желілері:</h4>
+                                    {currentPoint.attributes.social_network.data !== null && (
                                         <div className="flex items-center gap-x-2">
-                                            {currentPoint.attributes.social_network.data.attributes.instagram && (
-                                                <a href={currentPoint.attributes.social_network.data.attributes.instagram} target="_blank">
-                                                    <Instagram size={24}/>
-                                                </a>
-                                            )}
-                                            {currentPoint.attributes.social_network.data.attributes.telegram && (
-                                                <a href={currentPoint.attributes.social_network.data.attributes.telegram} target="_blank">
-                                                    <Image priority={true} src={Telegram} alt="Logo" width={24} />
-                                                </a>
-                                            )}
-                                            {currentPoint.attributes.social_network.data.attributes.twitter && (
-                                                <a href={currentPoint.attributes.social_network.data.attributes.twitter} target="_blank">
-                                                    <Image priority={true} src={X} alt="Logo" width={24} />
-                                                </a>
-                                            )}
-                                            {currentPoint.attributes.social_network.data.attributes.facebook && (
-                                                <a href={currentPoint.attributes.social_network.data.attributes.facebook} target="_blank">
-                                                    <Facebook size={24}/>
-                                                </a>
-                                            )}
+                                            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Әлеуметтік
+                                                желілері:</h4>
+                                            <div className="flex items-center gap-x-2">
+                                                {currentPoint.attributes.social_network.data.attributes.instagram && (
+                                                    <a href={currentPoint.attributes.social_network.data.attributes.instagram}
+                                                       target="_blank">
+                                                        <Instagram size={24}/>
+                                                    </a>
+                                                )}
+                                                {currentPoint.attributes.social_network.data.attributes.telegram && (
+                                                    <a href={currentPoint.attributes.social_network.data.attributes.telegram}
+                                                       target="_blank">
+                                                        <Image priority={true} src={Telegram} alt="Logo"
+                                                               width={24}/>
+                                                    </a>
+                                                )}
+                                                {currentPoint.attributes.social_network.data.attributes.twitter && (
+                                                    <a href={currentPoint.attributes.social_network.data.attributes.twitter}
+                                                       target="_blank">
+                                                        <Image priority={true} src={X} alt="Logo" width={24}/>
+                                                    </a>
+                                                )}
+                                                {currentPoint.attributes.social_network.data.attributes.facebook && (
+                                                    <a href={currentPoint.attributes.social_network.data.attributes.facebook}
+                                                       target="_blank">
+                                                        <Facebook size={24}/>
+                                                    </a>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
-                                <div className="flex flex-col gap-y-4 w-1/3 rounded border p-2">
-                                    <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Іс-шаралар:</h4>
-                                    <Tabs defaultValue="all">
-                                        <TabsList className="grid w-full grid-cols-2">
-                                            <TabsTrigger value="all">Барлығы</TabsTrigger>
-                                            <TabsTrigger value="oq">ОҚ-мен бірге</TabsTrigger>
-                                        </TabsList>
-                                        <TabsContent value="all">
-                                            {currentPoint.attributes.events.data.map((item: any) => (
-                                                <div key={item.id} className="rounded border p-1">
-                                                    <h4 className="font-semibold">{item.attributes.title}</h4>
-                                                    <p>{item.attributes.content}</p>
-                                                    <p>{item.attributes.date}</p>
-                                                </div>
-                                            ))}
-                                        </TabsContent>
-                                        <TabsContent value="oq">
-                                            {currentPoint.attributes.events.data
-                                                .filter((item: any) => item.attributes.with_oq === true)
-                                                .map((item: any) => (
-                                                    <div key={item.id} className="rounded border p-1">
+                                <ScrollArea className="w-1/3 h-[400px]">
+                                    <div className="flex flex-col gap-y-4 w-full rounded border p-2">
+                                        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Іс-шаралар:</h4>
+                                        <Tabs defaultValue="all">
+                                            <TabsList className="grid w-full grid-cols-2">
+                                                <TabsTrigger value="all">Барлығы</TabsTrigger>
+                                                <TabsTrigger value="oq">ОҚ-мен бірге</TabsTrigger>
+                                            </TabsList>
+                                            <TabsContent value="all" className="flex flex-col gap-y-4">
+                                                {currentPoint.attributes.events.data.map((item: any) => (
+                                                    <div key={item.id} className="rounded border p-1 flex flex-col gap-y-2">
                                                         <h4 className="font-semibold">{item.attributes.title}</h4>
-                                                        <p>{item.attributes.content}</p>
-                                                        <p>{item.attributes.date}</p>
+                                                        <p className="font-semibold">Өткізілетін күні: {item.attributes.date}</p>
                                                     </div>
                                                 ))}
-                                        </TabsContent>
-                                    </Tabs>
-                                </div>
+                                            </TabsContent>
+                                            <TabsContent value="oq" className="flex flex-col gap-y-4">
+                                                {currentPoint.attributes.events.data
+                                                    .filter((item: any) => item.attributes.with_oq)
+                                                    .map((item: any) => (
+                                                        <div key={item.id} className="rounded border p-1 flex flex-col gap-y-2">
+                                                            <h4 className="font-semibold">{item.attributes.title}</h4>
+                                                            <p>Өткізілетін күні: {item.attributes.date}</p>
+                                                        </div>
+                                                    ))}
+                                            </TabsContent>
+                                        </Tabs>
+                                    </div>
+                                </ScrollArea>
                             </div>
                         </div>
                     ) : (
