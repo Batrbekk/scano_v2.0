@@ -142,3 +142,64 @@ export type SubsData = {
   header: string,
   subheader: string
 }
+
+export interface CommunityData {
+  id: number;
+  attributes: {
+    lat: string;
+    lon: string;
+    country: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    name: string;
+    city: string;
+    about: string;
+    friendly: number;
+    unfriendly: number;
+    representatives: {
+      data: [
+        {
+          id: number;
+          attributes: {
+            avatar: string;
+            dateOfBirth: string;
+            name: string;
+            position: string;
+            createdAt: string;
+            updatedAt: string;
+            publishedAt: string;
+          }
+        }
+      ]
+    };
+    social_network: {
+      data: {
+        id: number;
+        attributes: {
+          instagram: string;
+          twitter: string;
+          facebook: string;
+          telegram: string;
+          createdAt: string;
+          updatedAt: string;
+          publishedAt: string;
+        }
+      }
+    };
+    events: {
+      data: {
+        id: number;
+        attributes: {
+          title: string;
+          content: string;
+          date: string;
+          with_oq: boolean;
+          createdAt: string;
+          updatedAt: string;
+          publishedAt: string;
+        }
+      }[];
+    };
+  };
+}
