@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import Highcharts from "highcharts/highmaps";
 import HighchartsReact from "highcharts-react-official";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCookie } from "cookies-next";
 import { CommunityData } from "@/types";
 import {Button} from "@/components/ui/button";
 import {ChevronLeft, Facebook, Instagram} from "lucide-react";
@@ -11,6 +10,7 @@ import X from "@/public/icons/x.svg";
 import Image from "next/image";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {ScrollArea} from "@/components/ui/scroll-area";
+import {env} from "@/env.mjs";
 
 interface Props {
     country: string;
@@ -149,6 +149,23 @@ const CountryMap: React.FC<Props> = ({ country, objects }) => {
         }
     }
 
+    async function getCommunity(id: number) {
+        setCurrentPoint(null);
+        console.log(id);
+        const res = await fetch(`${env.NEXT_PUBLIC_STRAPI_URL}/communities/${id}?populate=*`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${env.NEXT_PUBLIC_TOKEN}`
+            },
+        });
+        if (res.ok) {
+            const fetchedData: { data: CommunityData } = await res.json();
+            console.log(fetchedData.data);
+            setCurrentPoint(fetchedData.data);
+        }
+    }
+
     useEffect(() => {
         const data = objects.map((item) => ({
             name: item.attributes.city,
@@ -175,124 +192,158 @@ const CountryMap: React.FC<Props> = ({ country, objects }) => {
                             }}>
                                 <ChevronLeft size={16} /> Назад
                             </Button>
-                            <div className="flex items-start gap-x-8">
-                                <div className="flex flex-col gap-y-4 w-2/3">
-                                    <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">{currentPoint.attributes.name}</h2>
-                                    <div className="flex flex-col gap-y-4">
-                                        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Ұйым өкілдері</h4>
-                                        <div className="flex flex-wrap gap-4">
-                                            {currentPoint.attributes.representatives.data.map((item: any) => (
-                                                <div key={item.id} className="flex items-start gap-x-2 rounded border p-4">
-                                                    {item.attributes.avatar && (
-                                                        <img src={item.attributes.avatar} alt="avatar"
-                                                             className="w-20"/>
-                                                    )}
-                                                    <div className="flex flex-col items-start">
-                                                        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{item.attributes.name}</h4>
-                                                        <p>{item.attributes.dateOfBirth}</p>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="">
-                                        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Ұйым Қызметі: </h4>
-                                        <p>{currentPoint.attributes.about}</p>
-                                    </div>
-                                    <div className="flex items-start border rounded">
-                                        <div className="border-r flex flex-col w-1/2">
-                                            <h4 className="scroll-m-20 border-b text-xl font-semibold tracking-tight text-center text-green-500">
-                                                Бейбіт ұйымдар
-                                            </h4>
-                                            <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-                                                {currentPoint.attributes.representatives.data
-                                                    .filter((item: any) => item.attributes.position === "friendly")
-                                                    .map((item: any) => (
-                                                        <li key={item.id}>
-                                                            {item.attributes.name}
-                                                        </li>
-                                                    ))}
-                                            </ul>
-                                        </div>
-                                        <div className="flex flex-col w-1/2">
-                                            <h4 className="scroll-m-20 border-b text-xl font-semibold tracking-tight text-center text-red-500">
-                                                Тату емес ұйымдар
-                                            </h4>
-                                            <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
-                                                {currentPoint.attributes.representatives.data
-                                                    .filter((item: any) => item.attributes.position === "unfriendly")
-                                                    .map((item: any) => (
-                                                        <li key={item.id}>
-                                                            {item.attributes.name}
-                                                        </li>
-                                                    ))}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    {currentPoint.attributes.social_network.data !== null && (
-                                        <div className="flex items-center gap-x-2">
-                                            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Әлеуметтік
-                                                желілері:</h4>
-                                            <div className="flex items-center gap-x-2">
-                                                {currentPoint.attributes.social_network.data.attributes.instagram && (
-                                                    <a href={currentPoint.attributes.social_network.data.attributes.instagram}
-                                                       target="_blank">
-                                                        <Instagram size={24}/>
-                                                    </a>
-                                                )}
-                                                {currentPoint.attributes.social_network.data.attributes.telegram && (
-                                                    <a href={currentPoint.attributes.social_network.data.attributes.telegram}
-                                                       target="_blank">
-                                                        <Image priority={true} src={Telegram} alt="Logo"
-                                                               width={24}/>
-                                                    </a>
-                                                )}
-                                                {currentPoint.attributes.social_network.data.attributes.twitter && (
-                                                    <a href={currentPoint.attributes.social_network.data.attributes.twitter}
-                                                       target="_blank">
-                                                        <Image priority={true} src={X} alt="Logo" width={24}/>
-                                                    </a>
-                                                )}
-                                                {currentPoint.attributes.social_network.data.attributes.facebook && (
-                                                    <a href={currentPoint.attributes.social_network.data.attributes.facebook}
-                                                       target="_blank">
-                                                        <Facebook size={24}/>
-                                                    </a>
-                                                )}
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                                <ScrollArea className="w-1/3 h-[400px]">
-                                    <div className="flex flex-col gap-y-4 w-full rounded border p-2">
-                                        <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Іс-шаралар:</h4>
-                                        <Tabs defaultValue="all">
-                                            <TabsList className="grid w-full grid-cols-2">
-                                                <TabsTrigger value="all">Барлығы</TabsTrigger>
-                                                <TabsTrigger value="oq">ОҚ-мен бірге</TabsTrigger>
-                                            </TabsList>
-                                            <TabsContent value="all" className="flex flex-col gap-y-4">
-                                                {currentPoint.attributes.events.data.map((item: any) => (
-                                                    <div key={item.id} className="rounded border p-1 flex flex-col gap-y-2">
-                                                        <h4 className="font-semibold">{item.attributes.title}</h4>
-                                                        <p className="font-semibold">Өткізілетін күні: {item.attributes.date}</p>
-                                                    </div>
-                                                ))}
-                                            </TabsContent>
-                                            <TabsContent value="oq" className="flex flex-col gap-y-4">
-                                                {currentPoint.attributes.events.data
-                                                    .filter((item: any) => item.attributes.with_oq)
-                                                    .map((item: any) => (
-                                                        <div key={item.id} className="rounded border p-1 flex flex-col gap-y-2">
-                                                            <h4 className="font-semibold">{item.attributes.title}</h4>
-                                                            <p>Өткізілетін күні: {item.attributes.date}</p>
+                            {currentPoint ? (
+                                <div className="flex items-start gap-x-8">
+                                    <div className="flex flex-col gap-y-4 w-2/3">
+                                        <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">{currentPoint.attributes.name}</h2>
+                                        {currentPoint.attributes.representatives.length > 0 && (
+                                            <div className="flex flex-col gap-y-4">
+                                                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Ұйым
+                                                    өкілдері</h4>
+                                                <div className="flex flex-wrap gap-4">
+                                                    {currentPoint.attributes.representatives.data.map((item: any) => (
+                                                        <div key={item.id}
+                                                             className="flex items-start gap-x-2 rounded border p-4">
+                                                            {item.attributes.avatar && (
+                                                                <img src={item.attributes.avatar} alt="avatar"
+                                                                     className="w-20"/>
+                                                            )}
+                                                            <div className="flex flex-col items-start">
+                                                                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">{item.attributes.name}</h4>
+                                                                <p>{item.attributes.dateOfBirth}</p>
+                                                            </div>
                                                         </div>
                                                     ))}
-                                            </TabsContent>
-                                        </Tabs>
+                                                </div>
+                                            </div>
+                                        )}
+                                        <div className="">
+                                            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Ұйым
+                                                Қызметі: </h4>
+                                            <p>{currentPoint.attributes.about}</p>
+                                        </div>
+                                        <div className="flex items-start border rounded">
+                                            <div className="border-r flex flex-col w-1/2">
+                                                <h4 className="scroll-m-20 border-b text-xl font-semibold tracking-tight text-center text-green-500">
+                                                    Бейбіт ұйымдар
+                                                </h4>
+                                                <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+                                                    {currentPoint.attributes.friendly.data
+                                                        .map((item: any) => (
+                                                            <li key={item.id} className="cursor-pointer hover:underline"
+                                                                onClick={() => {
+                                                                    getCommunity(item.id)
+                                                                }}>
+                                                                {item.attributes.name}
+                                                            </li>
+                                                        ))}
+                                                </ul>
+                                            </div>
+                                            <div className="flex flex-col w-1/2">
+                                                <h4 className="scroll-m-20 border-b text-xl font-semibold tracking-tight text-center text-red-500">
+                                                    Тату емес ұйымдар
+                                                </h4>
+                                                <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
+                                                    {currentPoint.attributes.unfriendlies.data
+                                                        .map((item: any) => (
+                                                            <li key={item.id} className="cursor-pointer hover:underline"
+                                                                onClick={() => {
+                                                                    getCommunity(item.id)
+                                                                }}>
+                                                                {item.attributes.name}
+                                                            </li>
+                                                        ))}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        {currentPoint.attributes.social_network.data !== null && (
+                                            <div className="flex items-center gap-x-2">
+                                                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Әлеуметтік
+                                                    желілері:</h4>
+                                                <div className="flex items-center gap-x-2">
+                                                    {currentPoint.attributes.social_network.data.attributes.instagram && (
+                                                        <a href={currentPoint.attributes.social_network.data.attributes.instagram}
+                                                           target="_blank">
+                                                            <Instagram size={24}/>
+                                                        </a>
+                                                    )}
+                                                    {currentPoint.attributes.social_network.data.attributes.telegram && (
+                                                        <a href={currentPoint.attributes.social_network.data.attributes.telegram}
+                                                           target="_blank">
+                                                            <Image priority={true} src={Telegram} alt="Logo"
+                                                                   width={24}/>
+                                                        </a>
+                                                    )}
+                                                    {currentPoint.attributes.social_network.data.attributes.twitter && (
+                                                        <a href={currentPoint.attributes.social_network.data.attributes.twitter}
+                                                           target="_blank">
+                                                            <Image priority={true} src={X} alt="Logo" width={24}/>
+                                                        </a>
+                                                    )}
+                                                    {currentPoint.attributes.social_network.data.attributes.facebook && (
+                                                        <a href={currentPoint.attributes.social_network.data.attributes.facebook}
+                                                           target="_blank">
+                                                            <Facebook size={24}/>
+                                                        </a>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                </ScrollArea>
-                            </div>
+                                    <ScrollArea className="w-1/3 h-[400px]">
+                                        <div className="flex flex-col gap-y-4 w-full rounded border p-2">
+                                            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Іс-шаралар:</h4>
+                                            <Tabs defaultValue="all">
+                                                <TabsList className="grid w-full grid-cols-2 mb-4">
+                                                    <TabsTrigger value="all">Барлығы</TabsTrigger>
+                                                    <TabsTrigger value="oq">ОҚ-мен бірге</TabsTrigger>
+                                                </TabsList>
+                                                <TabsContent value="all" className="flex flex-col gap-y-4 mt-0">
+                                                    {currentPoint.attributes.events.data.map((item: any) => (
+                                                        <div key={item.id}
+                                                             className="rounded border p-1 flex flex-col gap-y-2">
+                                                            <h4 className="font-semibold">{item.attributes.title}</h4>
+                                                            <p className="font-semibold">Өткізілетін
+                                                                күні: {item.attributes.date}</p>
+                                                        </div>
+                                                    ))}
+                                                    {currentPoint.attributes.events.data.length < 1 && (
+                                                        <h4 className="text-center text-xl mt-0 font-semibold tracking-tight">Нет
+                                                            данных</h4>
+                                                    )}
+                                                </TabsContent>
+                                                <TabsContent value="oq" className="flex flex-col gap-y-4 mt-0">
+                                                    {currentPoint.attributes.events.data
+                                                        .filter((item: any) => item.attributes.with_oq)
+                                                        .map((item: any) => (
+                                                            <div key={item.id}
+                                                                 className="rounded border p-1 flex flex-col gap-y-2">
+                                                                <h4 className="font-semibold">{item.attributes.title}</h4>
+                                                                <p>Өткізілетін күні: {item.attributes.date}</p>
+                                                            </div>
+                                                        ))}
+                                                    {currentPoint.attributes.events.data.filter((item: any) => item.attributes.with_oq).length < 1 && (
+                                                        <h4 className="text-center text-xl mt-0 font-semibold tracking-tight">Нет
+                                                            данных</h4>
+                                                    )}
+                                                </TabsContent>
+                                            </Tabs>
+                                        </div>
+                                    </ScrollArea>
+                                </div>
+                            ) : (
+                                <div className="flex items-start gap-x-4">
+                                    <div className="w-2/3 flex flex-col gap-y-4">
+                                        <Skeleton className="h-20 w-full" />
+                                        <Skeleton className="h-20 w-full" />
+                                        <Skeleton className="h-20 w-full" />
+                                    </div>
+                                    <div className="w-1/3 flex flex-col gap-y-4">
+                                        <Skeleton className="h-20 w-full" />
+                                        <Skeleton className="h-20 w-full" />
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ) : (
                         <HighchartsReact

@@ -14,8 +14,6 @@ if (typeof Highcharts === 'object') {
     exporting(Highcharts);
 }
 
-const token = 'd78a68cf8c36fe44446001a4c03c8605c5a011620db7b6991ce1f2d776d76c61fa1c6c3d75f69da18ce7cf9c704f27e238ab876930a5a67a3c2fb4880e780a87f34d6a56fe191ef147394f98adffc73398829fac432186c05b4825a7f7112fd56bcb6971b3ef9385f6161669da6eeab3c1acb391891ec0755371742d9d1bb545';
-
 const Map = () => {
     const [pending, setPending] = useState<boolean>(false);
     const chartComponentRef = useRef<HighchartsReact.RefObject>(null);
@@ -90,7 +88,7 @@ const Map = () => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${env.NEXT_PUBLIC_TOKEN}`
                 },
             });
 

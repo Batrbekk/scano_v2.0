@@ -155,8 +155,12 @@ export interface CommunityData {
     name: string;
     city: string;
     about: string;
-    friendly: number;
-    unfriendly: number;
+    friendly: {
+      data: []
+    };
+    unfriendlies: {
+      data: []
+    };
     representatives: {
       data: [
         {
