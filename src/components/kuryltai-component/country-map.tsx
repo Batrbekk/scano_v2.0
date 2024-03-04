@@ -196,7 +196,7 @@ const CountryMap: React.FC<Props> = ({ country, objects }) => {
                                 <div className="flex items-start gap-x-8">
                                     <div className="flex flex-col gap-y-4 w-2/3">
                                         <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">{currentPoint.attributes.name}</h2>
-                                        {currentPoint.attributes.representatives.length > 0 && (
+                                        {currentPoint.attributes.representatives.data.length > 0 && (
                                             <div className="flex flex-col gap-y-4">
                                                 <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">Ұйым
                                                     өкілдері</h4>
