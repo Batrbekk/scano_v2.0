@@ -204,44 +204,39 @@ const CountryMap: React.FC<Props> = ({ country, objects }) => {
                                           <img src={currentProfile.attributes.avatar} alt="avatar"
                                                className="w-48 rounded"/>
                                         )}
-                                        {currentPoint.attributes.social_network.data !== null && (
-                                          <div className="flex items-center gap-x-2">
-                                              <h4
-                                                className="scroll-m-20 text-xl font-semibold tracking-tight">Әлеуметтік
-                                                  желілері:</h4>
-                                              <div className="flex items-center gap-x-2">
-                                                  {currentPoint.attributes.social_network.data.attributes.instagram && (
+                                        <div className="flex items-center justify-center gap-x-2">
+                                            <div className="flex items-center gap-x-2">
+                                                {currentProfile.attributes.instagram && (
                                                     <a
-                                                      href={currentPoint.attributes.social_network.data.attributes.instagram}
-                                                      target="_blank">
+                                                        href={currentProfile.attributes.instagram}
+                                                        target="_blank">
                                                         <Instagram size={24}/>
                                                     </a>
-                                                  )}
-                                                  {currentPoint.attributes.social_network.data.attributes.telegram && (
+                                                )}
+                                                {currentProfile.attributes.telegram && (
                                                     <a
-                                                      href={currentPoint.attributes.social_network.data.attributes.telegram}
-                                                      target="_blank">
+                                                        href={currentProfile.attributes.telegram}
+                                                        target="_blank">
                                                         <Image priority={true} src={Telegram} alt="Logo"
                                                                width={24}/>
                                                     </a>
-                                                  )}
-                                                  {currentPoint.attributes.social_network.data.attributes.twitter && (
+                                                )}
+                                                {currentProfile.attributes.twitter && (
                                                     <a
-                                                      href={currentPoint.attributes.social_network.data.attributes.twitter}
-                                                      target="_blank">
+                                                        href={currentProfile.attributes.twitter}
+                                                        target="_blank">
                                                         <Image priority={true} src={X} alt="Logo" width={24}/>
                                                     </a>
-                                                  )}
-                                                  {currentPoint.attributes.social_network.data.attributes.facebook && (
+                                                )}
+                                                {currentProfile.attributes.facebook && (
                                                     <a
-                                                      href={currentPoint.attributes.social_network.data.attributes.facebook}
-                                                      target="_blank">
+                                                        href={currentProfile.attributes.facebook}
+                                                        target="_blank">
                                                         <Facebook size={24}/>
                                                     </a>
-                                                  )}
-                                              </div>
-                                          </div>
-                                        )}
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="flex flex-col gap-y-4 w-full">
                                         <h2
