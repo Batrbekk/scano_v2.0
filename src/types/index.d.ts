@@ -166,6 +166,7 @@ export interface CommunityData {
         {
           id: number;
           attributes: {
+            biography: string;
             avatar: string;
             dateOfBirth: string;
             name: string;

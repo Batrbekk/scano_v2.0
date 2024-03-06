@@ -9,6 +9,7 @@ import { CommunityData } from "@/types";
 import {CountryMap} from "@/components/kuryltai-component/country-map";
 import {Dialog, DialogContent} from "@/components/ui/dialog";
 import {setCookie} from "cookies-next";
+import {ScrollArea} from "@/components/ui/scroll-area";
 
 if (typeof Highcharts === 'object') {
     exporting(Highcharts);
@@ -134,10 +135,10 @@ const Map = () => {
                 setIsOpen(!isOpen);
             }}>
                 <DialogContent
-                    className="max-w-4xl"
-                    onInteractOutside={(e) => {
-                        setIsOpen(false);
-                    }}
+                  className="max-w-6xl"
+                  onInteractOutside={(e) => {
+                      setIsOpen(false);
+                  }}
                 >
                     <CountryMap country={currentCountry} objects={currentCountryData} />
                 </DialogContent>
